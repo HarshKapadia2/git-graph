@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
+index 2b1b3bb..1ec4f2c 100644
+--- a/node_modules/react-scripts/config/webpack.config.js
++++ b/node_modules/react-scripts/config/webpack.config.js
+@@ -343,6 +343,13 @@ module.exports = function (webpackEnv) {
+           babelRuntimeRegenerator,
+         ]),
+       ],
++	  fallback: {
++		assert: require.resolve('assert'),
++		buffer: require.resolve('buffer'),
++		stream: require.resolve('stream-browserify'),
++		util: require.resolve('util'),
++		zlib: require.resolve('browserify-zlib'),
++	  },
+     },
+     module: {
+       strictExportPresence: true,

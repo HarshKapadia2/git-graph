@@ -1,0 +1,24 @@
+.git-object {
+	background-color: #757575;
+	padding: 0.5em;
+	border-radius: 5px;
+	text-align: center;
+	margin: 2em 0;
+}
+
+.commit-object {
+	background-color: red;
+}
+
+.tree-object {
+	background-color: blue;
+	margin: 2em 25em 2em 15em;
+}
+
+.blob-object {
+	background-color: darkviolet;
+}
+
+.HEAD-object {
+	background-color: #242424;
+}

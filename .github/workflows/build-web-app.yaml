@@ -1,0 +1,61 @@
+name: Build and deploy web app
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - ".github/workflows/**"
+            - "patches/**"
+            - "public/**"
+            - "src/**"
+            - ".env.production"
+            - "package-lock.json"
+            - "package.json"
+            - "yarn.lock"
+    pull_request:
+        branches:
+            - main
+        paths:
+            - ".github/workflows/**"
+            - "patches/**"
+            - "public/**"
+            - "src/**"
+            - ".env.production"
+            - "package-lock.json"
+            - "package.json"
+            - "yarn.lock"
+    workflow_dispatch: # Allows manual execution of workflow
+
+jobs:
+    build:
+        if: startsWith(github.ref, 'refs/pull/')
+        runs-on: ubuntu-latest
+        container: node:17
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Build web app
+              run: |
+                  npm install
+                  npm run build
+
+    build-and-deploy:
+        if: startsWith(github.ref, 'refs/heads/')
+        runs-on: ubuntu-latest
+        container: node:17
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Build web app
+              run: |
+                  npm install
+                  npm run build
+
+            - name: Deploy to GitHub Pages
+              uses: JamesIves/github-pages-deploy-action@4.2.2
+              with:
+                  branch: gh-pages
+                  folder: build
+                  clean: true
