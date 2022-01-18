@@ -36,6 +36,8 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Build web app
+              env:
+                  CI: false # To prevent taking warnings as errors
               run: |
                   npm install
                   npm run build
@@ -49,6 +51,8 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Build web app
+              env:
+                  CI: false # To prevent taking warnings as errors
               run: |
                   npm install
                   npm run build
