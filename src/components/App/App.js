@@ -46,7 +46,7 @@ function App() {
 
 			<main>
 				<button onClick={() => showDirectoryPicker()}>
-					Click to Choose Directory
+					Click to Choose a '.git' Directory
 				</button>
 
 				<GraphArea objectData={objectData} />
