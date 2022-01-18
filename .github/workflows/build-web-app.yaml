@@ -57,6 +57,11 @@ jobs:
                   npm install
                   npm run build
 
+            - name: Install package for deploy Action
+              run: |
+                  apt-get update
+                  apt-get install rsync
+
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4.2.2
               with:
