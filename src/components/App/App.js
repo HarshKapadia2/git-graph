@@ -53,7 +53,15 @@ function App() {
 			</main>
 
 			<footer>
-				Made by&nbsp;
+				Learn about&nbsp;
+				<a
+					href="https://harshkapadia2.github.io/git_basics/#_git_objects"
+					target="_blank"
+					rel="noreferrer"
+				>
+					Git Objects
+				</a>
+				.&nbsp;Made by&nbsp;
 				<a
 					href="https://harshkapadia.me"
 					target="_blank"
@@ -61,7 +69,7 @@ function App() {
 				>
 					Harsh Kapadia
 				</a>
-				. (
+				.&nbsp;Visit the&nbsp;
 				<a
 					href="https://github.com/HarshKapadia2/git-graph"
 					target="_blank"
@@ -69,7 +77,7 @@ function App() {
 				>
 					GitHub Repo
 				</a>
-				)
+				.
 			</footer>
 		</>
 	);

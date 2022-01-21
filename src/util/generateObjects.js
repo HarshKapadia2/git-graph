@@ -189,3 +189,4 @@ export default getObjects;
 // Too long commit msg? (Does Git have inbuilt precautions for that? If yes, then I might not need to add protection for that.)
 // Handle multiple parents per commit
 // Handle image parsing errors
+// Handle empty blobs (same hash) with different file names

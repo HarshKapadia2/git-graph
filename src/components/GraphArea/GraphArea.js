@@ -18,7 +18,7 @@ const GraphArea = ({ objectData }) => {
 	}, [objectData]);
 
 	const randomColor = () => {
-		const colors = ["yellow", "red", "blue"];
+		const colors = ["yellow", "red", "blue", "lawngreen"];
 		const index = Math.floor(Math.random() * colors.length);
 		return colors[index];
 	};
