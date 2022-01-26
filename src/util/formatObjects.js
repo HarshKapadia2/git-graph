@@ -32,7 +32,8 @@ function formatObjects(objectData = {}) {
 				if (
 					!BLOBS.some(
 						(blobObject) =>
-							blobObject.hash === gitBlobs[blobKey].hash
+							blobObject.hash === gitBlobs[blobKey].hash &&
+							blobObject.name === gitBlobs[blobKey].name
 					)
 				)
 					BLOBS.push({
@@ -95,7 +96,9 @@ function addRecursiveTrees(treeHash = "") {
 		} else {
 			if (
 				!BLOBS.some(
-					(blobObject) => blobObject.hash === obj[objKey].hash
+					(blobObject) =>
+						blobObject.hash === obj[objKey].hash &&
+						blobObject.name === obj[objKey].name
 				)
 			)
 				BLOBS.push({

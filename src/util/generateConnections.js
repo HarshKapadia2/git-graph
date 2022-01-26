@@ -1,3 +1,5 @@
+import getId from "./generateId";
+
 let CONNECTIONS = [];
 let OBJECT_DATA = {};
 
@@ -27,7 +29,7 @@ function getConnections(objectData = {}) {
 			} else {
 				CONNECTIONS.push({
 					start: gitObjects[objKey].tree,
-					end: gitBlobs[blobKey].hash
+					end: getId(gitBlobs[blobKey].hash, gitBlobs[blobKey].name)
 				});
 			}
 		}
@@ -54,7 +56,7 @@ function addRecursiveTrees(treeHash = "") {
 		} else
 			CONNECTIONS.push({
 				start: treeHash,
-				end: obj[objKey].hash
+				end: getId(obj[objKey].hash, obj[objKey].name)
 			});
 	}
 }

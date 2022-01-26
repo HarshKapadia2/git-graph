@@ -1,3 +1,4 @@
+import getId from "../../util/generateId";
 import GitObject from "../GitObject/GitObject";
 import "./ObjectArea.css";
 
@@ -14,7 +15,11 @@ const ObjectArea = ({ objectType, objects }) => {
 				? objects.map((obj, index) => (
 						<GitObject
 							objectType={objectType}
-							objId={obj.hash}
+							objId={
+								objectType === "blob"
+									? getId(obj.hash, obj.name)
+									: obj.hash
+							}
 							hash={obj.hash}
 							name={obj.name}
 							key={index}
