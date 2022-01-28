@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/git-graph/static/css/main.a0ae3086.css",
-    "main.js": "/git-graph/static/js/main.db658c0b.js",
+    "main.css": "/git-graph/static/css/main.7942530a.css",
+    "main.js": "/git-graph/static/js/main.80bf45cb.js",
     "index.html": "/git-graph/index.html"
   },
   "entrypoints": [
-    "static/css/main.a0ae3086.css",
-    "static/js/main.db658c0b.js"
+    "static/css/main.7942530a.css",
+    "static/js/main.80bf45cb.js"
   ]
 }
