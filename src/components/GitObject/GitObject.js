@@ -6,14 +6,12 @@ const GitObject = ({ objectType, objId, hash, name }) => {
 	return (
 		<div className={objectClass} id={objId}>
 			{objectType}
-			{hash ? " " + hash.slice(0, 7) : ""}
-			{name ? (
+			{hash && " " + hash.slice(0, 7)}
+			{name && (
 				<>
 					<br />
 					{name}
 				</>
-			) : (
-				""
 			)}
 		</div>
 	);

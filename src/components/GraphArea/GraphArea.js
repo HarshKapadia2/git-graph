@@ -53,21 +53,20 @@ const GraphArea = ({ objectData }) => {
 				key="blob"
 			/>
 
-			{gitObjectData.objectConnections !== undefined
-				? gitObjectData.objectConnections.map((connection, index) => {
-						if (connection.end !== "")
-							return (
-								<Xarrow
-									start={connection.start}
-									end={connection.end}
-									color={randomColor()}
-									key={index}
-									zIndex={-1}
-								/>
-							);
-						else return "";
-				  })
-				: ""}
+			{gitObjectData.objectConnections !== undefined &&
+				gitObjectData.objectConnections.map((connection, index) => {
+					if (connection.end !== "")
+						return (
+							<Xarrow
+								start={connection.start}
+								end={connection.end}
+								color={randomColor()}
+								key={index}
+								zIndex={-1}
+							/>
+						);
+					else return "";
+				})}
 		</section>
 	);
 };
