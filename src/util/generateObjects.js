@@ -132,7 +132,8 @@ async function getHead() {
 	headRef = headRef.slice(5, -1);
 
 	let head = await readFile(`.git/${headRef}`, "binary");
-	head = head.slice(0, -1);
+	if (head === undefined) head = await getHeadFromPackedRefs(headRef);
+	else head = head.slice(0, -1);
 
 	return head;
 }
@@ -150,8 +151,15 @@ async function getObjectType(hash = "") {
 
 async function getDecompressedFileBuffer(path = "") {
 	let fileBuffer = await readFile(path, "buffer");
-	fileBuffer = Buffer.from(new Uint8Array(fileBuffer));
+	if (fileBuffer === undefined) {
+		FILE_ARR = [];
+		OBJECT_ARR = [];
+		RECURSED_DATA = {};
 
+		throw new Error("File not found.");
+	}
+
+	fileBuffer = Buffer.from(new Uint8Array(fileBuffer));
 	fileBuffer = inflateSync(fileBuffer);
 
 	return fileBuffer;
@@ -170,9 +178,24 @@ async function readFile(path = "", readType = "") {
 			(file) => file.webkitRelativePath === path
 		);
 
+		if (fileArr[0] === undefined) resolve(undefined);
+
 		if (readType === "buffer") readFile.readAsArrayBuffer(fileArr[0]);
 		else if (readType === "binary") readFile.readAsBinaryString(fileArr[0]);
 	});
+}
+
+async function getHeadFromPackedRefs(reqdRef = "") {
+	let packedRefs = await readFile(".git/packed-refs", "binary");
+	packedRefs = packedRefs.split("\n");
+
+	for (let i = 1; i < packedRefs.length; i++) {
+		const refEntry = packedRefs[i].split(" ");
+
+		if (refEntry[1] === reqdRef) return refEntry[0];
+	}
+
+	return "";
 }
 
 // function isCommitInObjArr(commitHash = "") {

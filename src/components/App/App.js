@@ -5,9 +5,11 @@ import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
 import "./App.css";
+import ErrorMsg from "../ErrorMsg/ErrorMsg";
 
 function App() {
 	const [objectData, setObjectData] = useState({});
+	const [isPackedRepo, setIsPackedRepo] = useState(false);
 
 	const showDirectoryPicker = async () => {
 		const skippedDirectories = [
@@ -32,10 +34,15 @@ function App() {
 	};
 
 	const getObjectData = async (fileBlobArr) => {
-		let rawObjects = await getObjects(fileBlobArr);
-		let objects = formatObjects(rawObjects);
-		let objectConnections = getConnections(rawObjects);
-		setObjectData({ objects, objectConnections });
+		try {
+			let rawObjects = await getObjects(fileBlobArr);
+			let objects = formatObjects(rawObjects);
+			let objectConnections = getConnections(rawObjects);
+			setObjectData({ objects, objectConnections });
+			setIsPackedRepo(false);
+		} catch (err) {
+			if (err.message === "File not found.") setIsPackedRepo(true);
+		}
 	};
 
 	return (
@@ -49,7 +56,11 @@ function App() {
 					Click to Choose a '.git' Directory
 				</button>
 
-				<GraphArea objectData={objectData} />
+				{isPackedRepo ? (
+					<ErrorMsg errorType="packed repo" />
+				) : (
+					<GraphArea objectData={objectData} />
+				)}
 			</main>
 
 			<footer>

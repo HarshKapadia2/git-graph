@@ -1,0 +1,14 @@
+.error-msg {
+	padding: 1em 2em 2em 2em;
+	margin: 5em 1em;
+	display: grid;
+	place-content: center;
+	text-align: center;
+	border: 1px solid #242424;
+	border-radius: 5px;
+}
+
+.error-msg h2 {
+	color: red;
+	margin-bottom: 0.5em;
+}
