@@ -3,3 +3,18 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+
+/* ======================================================== SCROLLBAR ================================================== */
+
+body::-webkit-scrollbar {
+	width: 0.7em;
+}
+
+body::-webkit-scrollbar-track {
+	background-color: #212121;
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: #616161;
+	border-radius: 2px;
+}
