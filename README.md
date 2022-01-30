@@ -4,7 +4,7 @@ Visualize the Directed Acyclic Graph that Git creates to connect Commit, Tree an
 
 Hosted at [HarshKapadia2.github.io/git-graph](https://harshkapadia2.github.io/git-graph).
 
-![](sample.png)
+![](repo-img/sample.png)
 
 > NOTE:
 >
