@@ -20,6 +20,7 @@ const ObjectArea = ({ objectType, objects }) => {
 						}
 						hash={obj.hash}
 						name={obj.name}
+						isToBeColored={obj.color}
 						key={index}
 					/>
 				))}

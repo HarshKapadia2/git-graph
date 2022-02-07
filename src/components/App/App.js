@@ -1,15 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { directoryOpen } from "browser-fs-access";
 import GraphArea from "../GraphArea/GraphArea";
+import ErrorMsg from "../ErrorMsg/ErrorMsg";
+import CommitSelector from "../CommitSelector/CommitSelector";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
+import colorObjectsAndConnections from "../../util/coloring";
 import "./App.css";
-import ErrorMsg from "../ErrorMsg/ErrorMsg";
 
 function App() {
 	const [objectData, setObjectData] = useState({});
 	const [isPackedRepo, setIsPackedRepo] = useState(false);
+	const [showCommitSelector, setShowCommitSelector] = useState(false);
+	const [selectedCommits, setSelectedCommits] = useState([]);
+
+	useEffect(() => {
+		if (objectData.objects !== undefined) {
+			const updatedObjectData = colorObjectsAndConnections(
+				objectData,
+				selectedCommits
+			);
+			setObjectData(updatedObjectData);
+		}
+	}, [selectedCommits]);
+
+	useEffect(() => {
+		if (isPackedRepo) {
+			setShowCommitSelector(false);
+			setObjectData({});
+		}
+	}, [isPackedRepo]);
 
 	const showDirectoryPicker = async () => {
 		const skippedDirectories = [
@@ -38,8 +59,17 @@ function App() {
 			let rawObjects = await getObjects(fileBlobArr);
 			let objects = formatObjects(rawObjects);
 			let objectConnections = getConnections(rawObjects);
+
+			const headObj = {
+				start: "head",
+				end: objectConnections[0].start,
+				color: true
+			};
+			objectConnections.unshift(headObj);
+
 			setObjectData({ objects, objectConnections });
-			setIsPackedRepo(false);
+			if (isPackedRepo) setIsPackedRepo(false);
+			if (showCommitSelector) setShowCommitSelector(false);
 		} catch (err) {
 			if (err.message === "File not found.") setIsPackedRepo(true);
 		}
@@ -52,9 +82,26 @@ function App() {
 			</header>
 
 			<main>
-				<button onClick={() => showDirectoryPicker()}>
-					Click to Choose a '.git' Directory
-				</button>
+				<div>
+					<button onClick={() => showDirectoryPicker()}>
+						Select a '.git' Directory to Display
+					</button>
+
+					{objectData.objects !== undefined && (
+						<button onClick={() => setShowCommitSelector(true)}>
+							Select Commits to Highlight
+						</button>
+					)}
+				</div>
+
+				{showCommitSelector && (
+					<CommitSelector
+						commits={objectData.objects.commits}
+						selectorDisplayState={setShowCommitSelector}
+						selectCommits={setSelectedCommits}
+						selectedCommits={selectedCommits}
+					/>
+				)}
 
 				{isPackedRepo ? (
 					<ErrorMsg errorType="packed repo" />

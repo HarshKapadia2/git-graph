@@ -26,6 +26,7 @@ h1 {
 
 button {
 	padding: 0.5em 1em;
+	margin: 0.5em;
 	border-radius: 5px;
 	background-color: #242424;
 	border-color: #242424;

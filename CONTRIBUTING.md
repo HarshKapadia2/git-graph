@@ -30,6 +30,82 @@
 
 ![](repo-img/component-structure.png)
 
+## `objectData` Structure
+
+```json
+{
+    "objects": {
+        "commits": [
+            {
+                "hash": "<string>",
+                "name": "<commit_msg>|''",
+				"color": <boolean>
+            },
+            ...
+        ],
+        "trees": [
+            {
+                "hash": "<string>",
+                "name": "<directory_name>|''",
+				"color": <boolean>
+            },
+            ...
+        ],
+        "blobs": [
+            {
+                "hash": "<string>",
+                "name": "<file_name>",
+				"color": <boolean>
+            },
+            ...
+        ]
+    },
+    "objectConnections": [
+        {
+            "start": "<hash|'head'>",
+            "end": "<hash|formatted_file_name|''>",
+			"color": <boolean>
+        },
+        ...
+    ]
+}
+```
+
+## `rawObjects` Structure
+
+```json
+{
+	"objects": [
+		{
+			"commit": "<hash>",
+			"commitMsg": "<commit_msg>|''",
+			"parentCommit": "<hash>|''",
+			"tree": "<hash>",
+			"blobs": [
+				{
+					"type": "blob|tree",
+					"name": "<file_name>|<directory_name>",
+					"hash": "<string>"
+				},
+				...
+			]
+		},
+		...
+	],
+	"recursiveTrees": {
+		"<hash>": [
+			{
+				"type": "blob|tree",
+				"name": "<file_name>|<directory_name>",
+				"hash": "<string>"
+			},
+			...
+		],
+		...
+	}
+}
+```
+
 ## Further Help
 
 If any further help is needed, do not hesitate to contact the author ([Harsh Kapadia](https://harshkapadia.me)) via Twitter [@harshgkapadia](https://twitter.com/harshgkapadia), [LinkedIn](https://www.linkedin.com/in/harshgkapadia) or e-mail ([contact@harshkapadia.me](mailto:contact@harshkapadia.me)). An [issue](https://github.com/HarshKapadia2/git-graph/issues) can be raised as well.

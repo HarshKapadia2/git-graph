@@ -4,17 +4,10 @@ import ObjectArea from "../ObjectArea/ObjectArea";
 import "./GraphArea.css";
 
 const GraphArea = ({ objectData }) => {
-	const [gitObjectData, setGitObjectData] = useState({});
+	const [gitObjectData, setGitObjectData] = useState(objectData);
 
 	useEffect(() => {
-		if (objectData.objectConnections !== undefined) {
-			const headObj = {
-				start: "head",
-				end: objectData.objectConnections[0].start
-			};
-			objectData.objectConnections.unshift(headObj);
-			setGitObjectData(objectData);
-		}
+		setGitObjectData(objectData);
 	}, [objectData]);
 
 	const randomColor = () => {
@@ -60,9 +53,13 @@ const GraphArea = ({ objectData }) => {
 							<Xarrow
 								start={connection.start}
 								end={connection.end}
-								color={randomColor()}
+								color={
+									connection.color === true
+										? randomColor()
+										: "#242424"
+								}
 								key={index}
-								zIndex={-1}
+								zIndex={connection.color === true ? -1 : -2}
 							/>
 						);
 					else return "";

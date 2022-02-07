@@ -8,10 +8,18 @@ function formatObjects(objectData = {}) {
 	const gitObjects = OBJECT_DATA.objects;
 
 	for (let objKey in gitObjects) {
-		COMMITS.push({ hash: gitObjects[objKey].commit, name: "" });
+		COMMITS.push({
+			hash: gitObjects[objKey].commit,
+			name: "",
+			color: true
+		});
 
 		if (!TREES.some((obj) => obj.hash === gitObjects[objKey].tree))
-			TREES.push({ hash: gitObjects[objKey].tree, name: "" });
+			TREES.push({
+				hash: gitObjects[objKey].tree,
+				name: "",
+				color: true
+			});
 
 		const gitBlobs = gitObjects[objKey].blobs;
 		for (let blobKey in gitBlobs) {
@@ -24,7 +32,8 @@ function formatObjects(objectData = {}) {
 				) {
 					TREES.push({
 						hash: gitBlobs[blobKey].hash,
-						name: gitBlobs[blobKey].name
+						name: gitBlobs[blobKey].name,
+						color: true
 					});
 					addRecursiveTrees(gitBlobs[blobKey].hash);
 				}
@@ -38,7 +47,8 @@ function formatObjects(objectData = {}) {
 				)
 					BLOBS.push({
 						hash: gitBlobs[blobKey].hash,
-						name: gitBlobs[blobKey].name
+						name: gitBlobs[blobKey].name,
+						color: true
 					});
 			}
 		}
@@ -89,7 +99,8 @@ function addRecursiveTrees(treeHash = "") {
 			) {
 				TREES.push({
 					hash: obj[objKey].hash,
-					name: obj[objKey].name
+					name: obj[objKey].name,
+					color: true
 				});
 				addRecursiveTrees(obj[objKey].hash);
 			}
@@ -103,7 +114,8 @@ function addRecursiveTrees(treeHash = "") {
 			)
 				BLOBS.push({
 					hash: obj[objKey].hash,
-					name: obj[objKey].name
+					name: obj[objKey].name,
+					color: true
 				});
 		}
 	}

@@ -10,12 +10,14 @@ function getConnections(objectData = {}) {
 	for (let objKey in gitObjects) {
 		CONNECTIONS.push({
 			start: gitObjects[objKey].commit,
-			end: gitObjects[objKey].parentCommit
+			end: gitObjects[objKey].parentCommit,
+			color: true
 		});
 
 		CONNECTIONS.push({
 			start: gitObjects[objKey].commit,
-			end: gitObjects[objKey].tree
+			end: gitObjects[objKey].tree,
+			color: true
 		});
 
 		const gitBlobs = gitObjects[objKey].blobs;
@@ -23,13 +25,15 @@ function getConnections(objectData = {}) {
 			if (gitBlobs[blobKey].type === "tree") {
 				CONNECTIONS.push({
 					start: gitObjects[objKey].tree,
-					end: gitBlobs[blobKey].hash
+					end: gitBlobs[blobKey].hash,
+					color: true
 				});
 				addRecursiveTrees(gitBlobs[blobKey].hash);
 			} else {
 				CONNECTIONS.push({
 					start: gitObjects[objKey].tree,
-					end: getId(gitBlobs[blobKey].hash, gitBlobs[blobKey].name)
+					end: getId(gitBlobs[blobKey].hash, gitBlobs[blobKey].name),
+					color: true
 				});
 			}
 		}
@@ -50,13 +54,15 @@ function addRecursiveTrees(treeHash = "") {
 		if (obj[objKey].type === "tree") {
 			CONNECTIONS.push({
 				start: treeHash,
-				end: obj[objKey].hash
+				end: obj[objKey].hash,
+				color: true
 			});
 			addRecursiveTrees(obj[objKey].hash);
 		} else
 			CONNECTIONS.push({
 				start: treeHash,
-				end: getId(obj[objKey].hash, obj[objKey].name)
+				end: getId(obj[objKey].hash, obj[objKey].name),
+				color: true
 			});
 	}
 }

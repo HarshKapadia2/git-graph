@@ -1,0 +1,77 @@
+#commit-selector {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 20vw;
+	min-height: 100vh;
+	background-color: black;
+	border-right: 1px solid #242424;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+#commit-selector-commit-wrapper,
+#commit-selector-shortcut-btn-wrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#commit-selector-dismiss {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+#selector-commit-wrapper {
+	max-height: 74vh;
+	overflow-y: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.selector-commit {
+	margin: 1em 0.25em;
+	display: flex;
+	align-items: center;
+}
+
+.selector-commit input {
+	cursor: pointer;
+}
+
+.selector-commit-text {
+	margin-left: 0.5em;
+}
+
+#commit-selector-btn-wrapper {
+	width: 100%;
+	border-top: 1px solid #242424;
+	display: flex;
+	justify-content: center;
+}
+
+#commit-select-btn {
+	width: 80%;
+}
+
+/* ======================================================== SCROLLBAR ================================================== */
+
+#selector-commit-wrapper::-webkit-scrollbar {
+	width: 0.7em;
+}
+
+#selector-commit-wrapper::-webkit-scrollbar-track {
+	background-color: #212121;
+}
+
+#selector-commit-wrapper::-webkit-scrollbar-thumb {
+	background-color: #616161;
+	border-radius: 2px;
+}

@@ -1,7 +1,9 @@
 import "./GitObject.css";
 
-const GitObject = ({ objectType, objId, hash, name }) => {
-	const objectClass = "git-object " + objectType + "-object";
+const GitObject = ({ objectType, objId, hash, name, isToBeColored }) => {
+	const objectClass = isToBeColored
+		? "git-object " + objectType + "-object"
+		: "git-object " + objectType + "-object git-object-no-color";
 
 	return (
 		<div className={objectClass} id={objId}>
