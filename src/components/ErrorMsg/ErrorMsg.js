@@ -9,7 +9,7 @@ const ErrorMsg = ({ errorType }) => {
 				<div>
 					Looks like the repository is{" "}
 					<a
-						href="https://harshkapadia2.github.io/git_basics/#_the_pack_directory"
+						href="https://git.harshkapadia.me/#_the_pack_directory"
 						target="_blank"
 						rel="noreferrer"
 					>

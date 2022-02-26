@@ -113,7 +113,7 @@ function App() {
 			<footer>
 				Learn about&nbsp;
 				<a
-					href="https://harshkapadia2.github.io/git_basics/#_git_objects"
+					href="https://git.harshkapadia.me/#_git_objects"
 					target="_blank"
 					rel="noreferrer"
 				>
