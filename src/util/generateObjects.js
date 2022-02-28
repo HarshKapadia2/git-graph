@@ -21,6 +21,8 @@ async function getObjects(fileObjects) {
 		let commitContent = await getDecompressedFileBuffer(commitFilePath);
 		commitContent = commitContent.toString("utf-8").split("\n");
 
+		let commitMsg = getCommitMsg(commitContent);
+
 		const treeArr = commitContent[0].split(" ");
 		tree = treeArr[2];
 
@@ -30,7 +32,7 @@ async function getObjects(fileObjects) {
 		if (parentCommitArr[0] === "parent") parentCommit = parentCommitArr[1];
 		else parentCommit = "";
 
-		OBJECT_ARR.push({ commit, commitMsg: "", parentCommit, tree, blobs });
+		OBJECT_ARR.push({ commit, commitMsg, parentCommit, tree, blobs });
 
 		commit = parentCommit;
 	} while (parentCommit !== "");
@@ -183,6 +185,34 @@ async function readFile(path = "", readType = "") {
 		if (readType === "buffer") readFile.readAsArrayBuffer(fileArr[0]);
 		else if (readType === "binary") readFile.readAsBinaryString(fileArr[0]);
 	});
+}
+
+function getCommitMsg(commitObjContent = []) {
+	let i = 0;
+	let firstParent = commitObjContent[1].split(" ");
+	let secondParent = commitObjContent[2].split(" ");
+
+	if (firstParent[0] === "parent") {
+		i++;
+		if (secondParent[0] === "parent") i++;
+	}
+
+	i += 3;
+
+	let temp = commitObjContent[i].split(" ");
+	if (temp[0] === "gpgsig") {
+		let j = 0;
+		for (j = i; j < commitObjContent.length; j++) {
+			if (commitObjContent[j] === " -----END PGP SIGNATURE-----") {
+				break;
+			}
+		}
+		i = j + 2;
+	}
+
+	i++;
+
+	return commitObjContent[i];
 }
 
 async function getHeadFromPackedRefs(reqdRef = "") {

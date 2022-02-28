@@ -10,7 +10,7 @@ function formatObjects(objectData = {}) {
 	for (let objKey in gitObjects) {
 		COMMITS.push({
 			hash: gitObjects[objKey].commit,
-			name: "",
+			name: gitObjects[objKey].commitMsg,
 			color: true
 		});
 

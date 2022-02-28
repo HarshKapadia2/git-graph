@@ -12,7 +12,7 @@ const GitObject = ({ objectType, objId, hash, name, isToBeColored }) => {
 			{name && (
 				<>
 					<br />
-					{name}
+					{name.length <= 40 ? name : name.slice(0, 40) + "..."}
 				</>
 			)}
 		</div>
