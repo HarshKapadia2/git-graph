@@ -3,6 +3,7 @@ import { directoryOpen } from "browser-fs-access";
 import GraphArea from "../GraphArea/GraphArea";
 import ErrorMsg from "../ErrorMsg/ErrorMsg";
 import CommitSelector from "../CommitSelector/CommitSelector";
+import Loader from "../Loader/Loader";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
@@ -12,6 +13,7 @@ import "./App.css";
 function App() {
 	const [objectData, setObjectData] = useState({});
 	const [isPackedRepo, setIsPackedRepo] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [showCommitSelector, setShowCommitSelector] = useState(false);
 	const [selectedCommits, setSelectedCommits] = useState([]);
 
@@ -28,6 +30,7 @@ function App() {
 	useEffect(() => {
 		if (isPackedRepo) {
 			setShowCommitSelector(false);
+			setIsLoading(false);
 			setObjectData({});
 		}
 	}, [isPackedRepo]);
@@ -51,6 +54,11 @@ function App() {
 			}
 		});
 
+		setIsLoading(true);
+		setShowCommitSelector(false);
+		setIsPackedRepo(false);
+		setObjectData({});
+
 		getObjectData(blobsInDirectory);
 	};
 
@@ -67,6 +75,7 @@ function App() {
 			};
 			objectConnections.unshift(headObj);
 
+			setIsLoading(false);
 			setObjectData({ objects, objectConnections });
 			if (isPackedRepo) setIsPackedRepo(false);
 			if (showCommitSelector) setShowCommitSelector(false);
@@ -103,11 +112,13 @@ function App() {
 					/>
 				)}
 
+				{isLoading && <Loader />}
+
 				{isPackedRepo ? (
 					<ErrorMsg errorType="packed repo" />
-				) : (
+				) : objectData.objects !== undefined ? (
 					<GraphArea objectData={objectData} />
-				)}
+				) : null}
 			</main>
 
 			<footer>
