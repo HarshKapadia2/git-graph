@@ -1,6 +1,6 @@
 .git-object {
 	background-color: #242424;
-	padding: 0.5em 1em;
+	padding: 0.5em;
 	border-radius: 5px;
 	text-align: center;
 	margin: 2em 0;
@@ -11,10 +11,11 @@
 .commit-object {
 	background-color: #ff8a80;
 	color: black;
+	margin-left: 0.5em;
 }
 
 .tree-object {
-	margin: 2em 25em 2em 15em;
+	margin: 2em 30vw 2em 15vw;
 	background-color: #82b1ff;
 	color: black;
 }
@@ -22,6 +23,7 @@
 .blob-object {
 	background-color: #ea80fc;
 	color: black;
+	margin-right: 0.5em;
 }
 
 .HEAD-object,
