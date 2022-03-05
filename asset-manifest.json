@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/git-graph/static/css/main.fd00d50b.css",
+    "main.css": "/git-graph/static/css/main.ef7eb131.css",
     "main.js": "/git-graph/static/js/main.339847ae.js",
     "index.html": "/git-graph/index.html",
     "static/media/cross.svg": "/git-graph/static/media/cross.6271d678f8e4af06a717472a9bf7f227.svg",
     "static/media/loader.svg": "/git-graph/static/media/loader.c42d63e5ccf6c49764ba668914c1eb45.svg"
   },
   "entrypoints": [
-    "static/css/main.fd00d50b.css",
+    "static/css/main.ef7eb131.css",
     "static/js/main.339847ae.js"
   ]
 }
