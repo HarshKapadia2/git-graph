@@ -13,3 +13,9 @@ Hosted at [HarshKapadia2.github.io/git-graph](https://harshkapadia2.github.io/gi
 > -   This project cannot handle all Git repos.
 > -   The code quality is not that great as a LOT of progress has yet to be made in terms of handling different Git repo scenarios.
 > -   Special thanks to [@KartikSoneji](https://github.com/KartikSoneji) for his help with some critical things.
+
+<br />
+
+<sub>
+	The Git logo by <a href="https://twitter.com/jasonlong">Jason Long</a> is licensed under the <a href="https://creativecommons.org/licenses/by/3.0/legalcode">Creative Commons Attribution 3.0 Unported License</a>.
+</sub>
