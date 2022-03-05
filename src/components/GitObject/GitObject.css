@@ -15,7 +15,8 @@
 }
 
 .tree-object {
-	margin: 2em 30vw 2em 15vw;
+	margin-right: 30vw;
+	margin-left: 15vw;
 	background-color: #82b1ff;
 	color: black;
 }
@@ -24,6 +25,10 @@
 	background-color: #ea80fc;
 	color: black;
 	margin-right: 0.5em;
+}
+
+.HEAD-object {
+	margin-left: 0.5em;
 }
 
 .HEAD-object,
