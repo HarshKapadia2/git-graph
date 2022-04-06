@@ -1,5 +1,8 @@
-import { inflateSync } from "browserify-zlib";
-import { Buffer } from "buffer";
+import {
+	getObjectType,
+	getDecompressedFileBuffer,
+	readFile
+} from "./commonFns";
 
 let FILE_ARR = [];
 let OBJECT_ARR = [];
@@ -18,7 +21,17 @@ async function getObjects(fileObjects) {
 		const commitFilePath =
 			".git/objects/" + commit.slice(0, 2) + "/" + commit.slice(2);
 
-		let commitContent = await getDecompressedFileBuffer(commitFilePath);
+		let commitContent = await getDecompressedFileBuffer(
+			FILE_ARR,
+			commitFilePath
+		);
+		if (commitContent === undefined) {
+			FILE_ARR = [];
+			OBJECT_ARR = [];
+			RECURSED_DATA = {};
+
+			throw new Error("File not found.");
+		}
 		commitContent = commitContent.toString("utf-8").split("\n");
 
 		let commitMsg = getCommitMsg(commitContent);
@@ -98,7 +111,14 @@ async function getBlobs(treeHash = "") {
 
 	const treeFilePath =
 		".git/objects/" + treeHash.slice(0, 2) + "/" + treeHash.slice(2);
-	const treeContent = await getDecompressedFileBuffer(treeFilePath);
+	const treeContent = await getDecompressedFileBuffer(FILE_ARR, treeFilePath);
+	if (treeContent === undefined) {
+		FILE_ARR = [];
+		OBJECT_ARR = [];
+		RECURSED_DATA = {};
+
+		throw new Error("File not found.");
+	}
 
 	let index = treeContent.indexOf("\0");
 	let [type, length] = treeContent.toString("utf-8", 0, index).split(" ");
@@ -116,7 +136,7 @@ async function getBlobs(treeHash = "") {
 
 		const hash = treeContent.toString("hex", nullIndex, (nullIndex += 20)); // '20' since the SHA1 hash is 20 bytes (40 hexadecimal characters per SHA1 hash)
 
-		const objectType = await getObjectType(hash);
+		const objectType = await getObjectType(FILE_ARR, hash);
 
 		blobArr.push({ type: objectType, name, hash });
 
@@ -130,61 +150,14 @@ async function getBlobs(treeHash = "") {
 }
 
 async function getHead() {
-	let headRef = await readFile(".git/HEAD", "binary");
+	let headRef = await readFile(FILE_ARR, ".git/HEAD", "binary");
 	headRef = headRef.slice(5, -1);
 
-	let head = await readFile(`.git/${headRef}`, "binary");
+	let head = await readFile(FILE_ARR, `.git/${headRef}`, "binary");
 	if (head === undefined) head = await getHeadFromPackedRefs(headRef);
 	else head = head.slice(0, -1);
 
 	return head;
-}
-
-async function getObjectType(hash = "") {
-	if (hash === "")
-		throw new Error("Hash parameter for getObjectType() missing.");
-
-	const filePath = ".git/objects/" + hash.slice(0, 2) + "/" + hash.slice(2);
-	const fileContent = await getDecompressedFileBuffer(filePath);
-
-	const objectType = fileContent.toString("utf-8").split(" ")[0];
-	return objectType;
-}
-
-async function getDecompressedFileBuffer(path = "") {
-	let fileBuffer = await readFile(path, "buffer");
-	if (fileBuffer === undefined) {
-		FILE_ARR = [];
-		OBJECT_ARR = [];
-		RECURSED_DATA = {};
-
-		throw new Error("File not found.");
-	}
-
-	fileBuffer = Buffer.from(new Uint8Array(fileBuffer));
-	fileBuffer = inflateSync(fileBuffer);
-
-	return fileBuffer;
-}
-
-async function readFile(path = "", readType = "") {
-	return new Promise((resolve, reject) => {
-		const readFile = new FileReader();
-
-		readFile.addEventListener("error", () => reject());
-		readFile.addEventListener("load", (event) =>
-			resolve(event.target.result)
-		);
-
-		const fileArr = FILE_ARR.filter(
-			(file) => file.webkitRelativePath === path
-		);
-
-		if (fileArr[0] === undefined) resolve(undefined);
-
-		if (readType === "buffer") readFile.readAsArrayBuffer(fileArr[0]);
-		else if (readType === "binary") readFile.readAsBinaryString(fileArr[0]);
-	});
 }
 
 function getCommitMsg(commitObjContent = []) {
@@ -216,7 +189,7 @@ function getCommitMsg(commitObjContent = []) {
 }
 
 async function getHeadFromPackedRefs(reqdRef = "") {
-	let packedRefs = await readFile(".git/packed-refs", "binary");
+	let packedRefs = await readFile(FILE_ARR, ".git/packed-refs", "binary");
 	packedRefs = packedRefs.split("\n");
 
 	for (let i = 1; i < packedRefs.length; i++) {
@@ -233,13 +206,3 @@ async function getHeadFromPackedRefs(reqdRef = "") {
 // }
 
 export default getObjects;
-
-// To do
-// Error handling
-// Handle packed repos
-// XSS protection
-// Commit msgs (beware of the GPG key, commit description, rebased commit msgs and other stuff in the commit msg file)
-// Too long commit msg? (Does Git have inbuilt precautions for that? If yes, then I might not need to add protection for that.)
-// Handle multiple parents per commit
-// Handle image parsing errors
-// Handle empty blobs (same hash) with different file names

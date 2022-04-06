@@ -6,6 +6,7 @@
 	margin: 2em 0;
 	font-size: 18px;
 	border: 1px solid black;
+	position: relative;
 }
 
 .commit-object {
@@ -35,4 +36,16 @@
 .git-object-no-color {
 	background-color: #242424;
 	color: #e0e0e0;
+}
+
+.raw-btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 0.125em 0.25em;
+	display: none;
+}
+
+.git-object:hover > .raw-btn {
+	display: block;
 }

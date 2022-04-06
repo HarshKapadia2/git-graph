@@ -2,7 +2,7 @@ import getId from "../../util/generateId";
 import GitObject from "../GitObject/GitObject";
 import "./ObjectArea.css";
 
-const ObjectArea = ({ objectType, objects }) => {
+const ObjectArea = ({ objectType, objects, sendRawObjDetails }) => {
 	return (
 		<div className="object-area">
 			{objectType === "commit" && (
@@ -21,6 +21,7 @@ const ObjectArea = ({ objectType, objects }) => {
 						hash={obj.hash}
 						name={obj.name}
 						isToBeColored={obj.color}
+						sendRawObjDetails={sendRawObjDetails}
 						key={index}
 					/>
 				))}

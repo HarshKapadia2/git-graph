@@ -4,18 +4,27 @@ import GraphArea from "../GraphArea/GraphArea";
 import ErrorMsg from "../ErrorMsg/ErrorMsg";
 import CommitSelector from "../CommitSelector/CommitSelector";
 import Loader from "../Loader/Loader";
+import RawDataDisplay from "../RawDataDisplay/RawDataDisplay";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
 import colorObjectsAndConnections from "../../util/coloring";
+import getObjRawData from "../../util/objectRawData";
 import "./App.css";
 
 function App() {
+	const [fileBlobs, setFileBlobs] = useState([]);
 	const [objectData, setObjectData] = useState({});
 	const [isPackedRepo, setIsPackedRepo] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [showCommitSelector, setShowCommitSelector] = useState(false);
 	const [selectedCommits, setSelectedCommits] = useState([]);
+	const [rawDataObjDetails, setRawDataObjDetails] = useState({});
+	const [objRawData, setObjRawData] = useState({});
+
+	useEffect(() => {
+		if (fileBlobs.length !== 0) getObjectData();
+	}, [fileBlobs]);
 
 	useEffect(() => {
 		if (objectData.objects !== undefined) {
@@ -29,11 +38,19 @@ function App() {
 
 	useEffect(() => {
 		if (isPackedRepo) {
-			setShowCommitSelector(false);
-			setIsLoading(false);
-			setObjectData({});
+			if (isLoading) setIsLoading(false);
+			if (showCommitSelector) setShowCommitSelector(false);
+			if (Object.keys(rawDataObjDetails).length !== 0)
+				setRawDataObjDetails([]);
+			if (Object.keys(objRawData).length !== 0) setObjRawData({});
+			if (Object.keys(objectData).length !== 0) setObjectData({});
+			if (fileBlobs.length !== 0) setFileBlobs([]);
 		}
 	}, [isPackedRepo]);
+
+	useEffect(() => {
+		if (Object.keys(rawDataObjDetails).length !== 0) handleObjRawData();
+	}, [rawDataObjDetails]);
 
 	const showDirectoryPicker = async () => {
 		const skippedDirectories = [
@@ -45,26 +62,31 @@ function App() {
 			"remotes"
 		];
 
-		const blobsInDirectory = await directoryOpen({
+		await directoryOpen({
 			recursive: true,
 			skipDirectory: (dir) => {
 				return skippedDirectories.some(
 					(skippedDir) => skippedDir === dir.name
 				);
 			}
-		});
+		})
+			.then((blobs) => {
+				setFileBlobs(blobs);
+				setIsLoading(true);
+				setObjectData({});
 
-		setIsLoading(true);
-		setShowCommitSelector(false);
-		setIsPackedRepo(false);
-		setObjectData({});
-
-		getObjectData(blobsInDirectory);
+				if (isPackedRepo) setIsPackedRepo(false);
+				if (showCommitSelector) setShowCommitSelector(false);
+				if (Object.keys(rawDataObjDetails).length !== 0)
+					setRawDataObjDetails([]);
+				if (Object.keys(objRawData).length !== 0) setObjRawData({});
+			})
+			.catch((err) => {});
 	};
 
-	const getObjectData = async (fileBlobArr) => {
+	const getObjectData = async () => {
 		try {
-			let rawObjects = await getObjects(fileBlobArr);
+			let rawObjects = await getObjects(fileBlobs);
 			let objects = formatObjects(rawObjects);
 			let objectConnections = getConnections(rawObjects);
 
@@ -79,9 +101,30 @@ function App() {
 			setObjectData({ objects, objectConnections });
 			if (isPackedRepo) setIsPackedRepo(false);
 			if (showCommitSelector) setShowCommitSelector(false);
+			if (Object.keys(rawDataObjDetails).length !== 0)
+				setRawDataObjDetails([]);
+			if (Object.keys(objRawData).length !== 0) setObjRawData({});
 		} catch (err) {
 			if (err.message === "File not found.") setIsPackedRepo(true);
 		}
+	};
+
+	const handleObjRawData = async () => {
+		const rawObjData = await getObjRawData(
+			fileBlobs,
+			rawDataObjDetails.objHash
+		);
+		setObjRawData(rawObjData);
+	};
+
+	const handleRawDataObjDetails = (objDetails) => {
+		if (objDetails.objHash !== rawDataObjDetails.objHash)
+			setRawDataObjDetails(objDetails);
+	};
+
+	const dismissRawDataDisplay = () => {
+		setRawDataObjDetails([]);
+		setObjRawData({});
 	};
 
 	return (
@@ -112,12 +155,23 @@ function App() {
 					/>
 				)}
 
+				{Object.keys(rawDataObjDetails).length !== 0 && (
+					<RawDataDisplay
+						objDetails={rawDataObjDetails}
+						rawData={objRawData}
+						dismissRawDataDisplay={dismissRawDataDisplay}
+					/>
+				)}
+
 				{isLoading && <Loader />}
 
 				{isPackedRepo ? (
 					<ErrorMsg errorType="packed repo" />
 				) : objectData.objects !== undefined ? (
-					<GraphArea objectData={objectData} />
+					<GraphArea
+						objectData={objectData}
+						sendRawObjDetails={handleRawDataObjDetails}
+					/>
 				) : null}
 			</main>
 

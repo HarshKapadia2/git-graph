@@ -1,0 +1,41 @@
+#raw-data-display {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 50vw;
+	min-height: 100vh;
+	background-color: black;
+	border-left: 1px solid #242424;
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	padding: 1em 2em;
+}
+
+#raw-data {
+	width: 100%;
+	margin-top: 1em;
+}
+
+.raw-data-field {
+	margin-bottom: 1em;
+	white-space: pre-wrap;
+	overflow: auto;
+	max-height: 60vh;
+}
+
+/* ======================================================== SCROLLBAR ================================================== */
+
+.raw-data-field::-webkit-scrollbar {
+	width: 0.7em;
+}
+
+.raw-data-field::-webkit-scrollbar-track {
+	background-color: #212121;
+}
+
+.raw-data-field::-webkit-scrollbar-thumb {
+	background-color: #616161;
+	border-radius: 2px;
+}

@@ -4,15 +4,33 @@ Visualize the Directed Acyclic Graph that Git creates to connect Commit, Tree an
 
 Hosted at [HarshKapadia2.github.io/git-graph](https://harshkapadia2.github.io/git-graph).
 
-![](repo-img/sample.png)
-
 > NOTE:
 >
-> -   Learn about [Git Objects](https://git.harshkapadia.me/#_git_objects).
+> -   [Learn about Git Objects.](https://git.harshkapadia.me/#_git_objects)
 > -   This web app is a part of [my Git Internals talks](https://talks.harshkapadia.me/git_internals).
-> -   This project cannot handle all Git repos.
-> -   The code quality is not that great as a LOT of progress has yet to be made in terms of handling different Git repo scenarios.
-> -   Special thanks to [@KartikSoneji](https://github.com/KartikSoneji) for his help with some critical things.
+> -   Special thanks to [@KartikSoneji](https://github.com/KartikSoneji) for his help with a few critical things.
+> -   Please report errors and bugs by [raising issues](https://github.com/HarshKapadia2/git-graph/issues).
+
+## Usage
+
+-   Select the `.git` directory of a repository for the graph to appear.
+    -   If the `.git` directory is not visible in the directory picker, please enable hidden file viewing on the local machine.
+    -   Extremely huge repositories might not load due to browser memory constraints.
+    -   Packed repo error: Please unpack all the [packfiles](https://git.harshkapadia.me/#_the_pack_directory) (`.pack` files) in the repository. ([Tutorial](https://www.youtube.com/watch?v=cauIy20JhFs))
+-   Using the Commit Selector, one or more Commits and their corresponding Trees and Blobs can be highlighted.
+-   Hover over objects and click on the 'Raw' button to view the raw contents of that Git Object.
+
+## Screenshots
+
+![](repo-img/sample-1.png)
+
+Select one or more commits to highlight 👇
+
+![](repo-img/sample-2.png)
+
+View the raw contents of any Git Object 👇
+
+![](repo-img/sample-3.png)
 
 <br />
 

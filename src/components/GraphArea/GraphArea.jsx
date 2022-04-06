@@ -3,7 +3,7 @@ import Xarrow from "react-xarrows";
 import ObjectArea from "../ObjectArea/ObjectArea";
 import "./GraphArea.css";
 
-const GraphArea = ({ objectData }) => {
+const GraphArea = ({ objectData, sendRawObjDetails }) => {
 	const [gitObjectData, setGitObjectData] = useState(objectData);
 
 	useEffect(() => {
@@ -34,6 +34,7 @@ const GraphArea = ({ objectData }) => {
 						: []
 				}
 				key="commit"
+				sendRawObjDetails={sendRawObjDetails}
 			/>
 			<ObjectArea
 				objectType="tree"
@@ -43,6 +44,7 @@ const GraphArea = ({ objectData }) => {
 						: []
 				}
 				key="tree"
+				sendRawObjDetails={sendRawObjDetails}
 			/>
 			<ObjectArea
 				objectType="blob"
@@ -52,6 +54,7 @@ const GraphArea = ({ objectData }) => {
 						: []
 				}
 				key="blob"
+				sendRawObjDetails={sendRawObjDetails}
 			/>
 
 			{gitObjectData.objectConnections !== undefined &&
