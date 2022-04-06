@@ -75,7 +75,7 @@ const CommitSelector = ({
 
 				<div id="commit-selector-shortcut-btn-wrapper">
 					<button onClick={() => submitAllCommits()}>
-						Select All Commits
+						Highlight All Commits
 					</button>
 
 					<button onClick={() => submitNoCommit()}>
@@ -104,7 +104,7 @@ const CommitSelector = ({
 					id="commit-select-btn"
 					onClick={() => submitSelectedCommits()}
 				>
-					Select Checked Commits
+					Highlight Checked Commits
 				</button>
 			</div>
 		</div>
