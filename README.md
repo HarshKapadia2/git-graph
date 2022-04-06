@@ -32,6 +32,10 @@ View the raw contents of any Git Object 👇
 
 ![](repo-img/sample-3.png)
 
+## Contribution
+
+Contributors are most welcome! Please go through the [`CONTRIBUTING.md` file](CONTRIBUTING.md) for local project setup instructions and the component and object structures.
+
 <br />
 
 <sub>
