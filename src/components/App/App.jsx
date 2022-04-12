@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { directoryOpen } from "browser-fs-access";
 import GraphArea from "../GraphArea/GraphArea";
 import ErrorMsg from "../ErrorMsg/ErrorMsg";
 import CommitSelector from "../CommitSelector/CommitSelector";
 import Loader from "../Loader/Loader";
 import RawDataDisplay from "../RawDataDisplay/RawDataDisplay";
+import BackToTop from "../BackToTop/BackToTop";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
@@ -21,6 +22,15 @@ function App() {
 	const [selectedCommits, setSelectedCommits] = useState([]);
 	const [rawDataObjDetails, setRawDataObjDetails] = useState({});
 	const [objRawData, setObjRawData] = useState({});
+
+	const backToTopBtn = useRef();
+	const scrollToTopTriggerDiv = useRef();
+	const header = useRef();
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(scrollToTop);
+		observer.observe(scrollToTopTriggerDiv.current);
+	}, []);
 
 	useEffect(() => {
 		if (fileBlobs.length !== 0) getObjectData();
@@ -131,9 +141,17 @@ function App() {
 		setObjRawData({});
 	};
 
+	const scrollToTop = (entries, observer) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting)
+				backToTopBtn.current.classList.add("hidden");
+			else backToTopBtn.current.classList.remove("hidden");
+		});
+	};
+
 	return (
 		<>
-			<header>
+			<header ref={header}>
 				<h1>Git Graph</h1>
 			</header>
 
@@ -149,6 +167,8 @@ function App() {
 						</button>
 					)}
 				</div>
+
+				<div ref={scrollToTopTriggerDiv}></div>
 
 				{showCommitSelector && (
 					<CommitSelector
@@ -177,6 +197,8 @@ function App() {
 						sendRawObjDetails={handleRawDataObjDetails}
 					/>
 				) : null}
+
+				<BackToTop backToTopBtn={backToTopBtn} header={header} />
 			</main>
 
 			<footer>

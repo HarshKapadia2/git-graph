@@ -1,0 +1,17 @@
+#back-to-top-btn {
+	padding: 1em;
+	position: fixed;
+	bottom: 2.5vh;
+	right: 2vw;
+	border-radius: 50%;
+	z-index: 1;
+}
+
+#back-to-top-btn img {
+	width: 1em;
+	height: 1em;
+}
+
+.hidden {
+	display: none;
+}
