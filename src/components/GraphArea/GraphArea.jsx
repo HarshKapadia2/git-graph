@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Xarrow from "react-xarrows";
 import ObjectArea from "../ObjectArea/ObjectArea";
 import "./GraphArea.css";
@@ -79,4 +79,4 @@ const GraphArea = ({ objectData, sendRawObjDetails }) => {
 	);
 };
 
-export default GraphArea;
+export const MemoizedGraphArea = React.memo(GraphArea);

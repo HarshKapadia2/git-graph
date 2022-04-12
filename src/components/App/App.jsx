@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { directoryOpen } from "browser-fs-access";
-import GraphArea from "../GraphArea/GraphArea";
+import { MemoizedGraphArea } from "../GraphArea/GraphArea";
 import ErrorMsg from "../ErrorMsg/ErrorMsg";
 import CommitSelector from "../CommitSelector/CommitSelector";
 import Loader from "../Loader/Loader";
@@ -133,10 +133,10 @@ function App() {
 		setObjRawData(rawObjData);
 	};
 
-	const handleRawDataObjDetails = (objDetails) => {
+	const handleRawDataObjDetails = useCallback((objDetails) => {
 		if (objDetails.objHash !== rawDataObjDetails.objHash)
 			setRawDataObjDetails(objDetails);
-	};
+	}, []);
 
 	const dismissRawDataDisplay = () => {
 		setRawDataObjDetails({});
@@ -198,7 +198,7 @@ function App() {
 				{isPackedRepo ? (
 					<ErrorMsg errorType="packed repo" />
 				) : objectData.objects !== undefined ? (
-					<GraphArea
+					<MemoizedGraphArea
 						objectData={objectData}
 						sendRawObjDetails={handleRawDataObjDetails}
 					/>
