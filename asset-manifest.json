@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/git-graph/static/css/main.a7459cd4.css",
-    "main.js": "/git-graph/static/js/main.3782c245.js",
+    "main.css": "/git-graph/static/css/main.546cb5d9.css",
+    "main.js": "/git-graph/static/js/main.c20f1c4b.js",
     "index.html": "/git-graph/index.html",
+    "static/media/up-arrow.svg": "/git-graph/static/media/up-arrow.1a4dec2bfb92cc90a92a5e9f3e61886c.svg",
     "static/media/cross.svg": "/git-graph/static/media/cross.6271d678f8e4af06a717472a9bf7f227.svg",
     "static/media/loader.svg": "/git-graph/static/media/loader.c42d63e5ccf6c49764ba668914c1eb45.svg"
   },
   "entrypoints": [
-    "static/css/main.a7459cd4.css",
-    "static/js/main.3782c245.js"
+    "static/css/main.546cb5d9.css",
+    "static/js/main.c20f1c4b.js"
   ]
 }
