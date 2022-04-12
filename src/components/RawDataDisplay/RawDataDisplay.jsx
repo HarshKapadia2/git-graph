@@ -10,19 +10,25 @@ const RawDataDisplay = ({ objDetails, rawData, dismissRawDataDisplay }) => {
 
 			<div id="raw-data">
 				<div className="raw-data-field">
-					Object Name: {objDetails.objName}
+					Object Name:{" "}
+					{objDetails.objName !== "" ? objDetails.objName : " —"}
 				</div>
 				<div className="raw-data-field">
-					Object Hash: {objDetails.objHash}
+					Object Hash:{"  "}
+					{objDetails.objHash}
 				</div>
 				<div className="raw-data-field">
-					Object Type: {rawData.objType}
+					Object Type:{"  "}
+					{rawData.objType}
 				</div>
 				<div className="raw-data-field">
-					Object Length: {rawData.objLength}
+					Object Length:{"  "}
+					{rawData.objLength}
 				</div>
-				<div className="raw-data-field">Object Content:</div>
-				<div className="raw-data-field">{rawData.objContent}</div>
+				<div className="raw-data-field">
+					<div id="raw-data-content-field-name">Object Content</div>
+					<div id="raw-data-file-content">{rawData.objContent}</div>
+				</div>
 			</div>
 		</div>
 	);
