@@ -89,7 +89,10 @@ const CommitSelector = ({
 					</button>
 				</div>
 
-				<div id="selector-commit-wrapper">
+				<div
+					id="selector-commit-wrapper"
+					onWheel={(event) => event.stopPropagation()}
+				>
 					{commits.map((commit, index) => (
 						<div
 							key={index}

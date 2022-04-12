@@ -27,7 +27,12 @@ const RawDataDisplay = ({ objDetails, rawData, dismissRawDataDisplay }) => {
 				</div>
 				<div className="raw-data-field">
 					<div id="raw-data-content-field-name">Object Content</div>
-					<div id="raw-data-file-content">{rawData.objContent}</div>
+					<div
+						id="raw-data-file-content"
+						onWheel={(event) => event.stopPropagation()}
+					>
+						{rawData.objContent}
+					</div>
 				</div>
 			</div>
 		</div>
