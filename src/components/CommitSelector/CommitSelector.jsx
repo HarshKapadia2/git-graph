@@ -93,6 +93,10 @@ const CommitSelector = ({
 							/>
 							<div className="selector-commit-text">
 								commit {commit.hash.slice(0, 7)}
+								<br />
+								{commit.name.length <= 30
+									? commit.name
+									: commit.name.slice(0, 30) + "..."}
 							</div>
 						</div>
 					))}
