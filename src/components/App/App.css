@@ -12,7 +12,7 @@ html {
 }
 
 header {
-	height: 12vh;
+	height: 13vh;
 	width: 100%;
 	display: grid;
 	place-content: center;
@@ -24,18 +24,23 @@ header {
 	backdrop-filter: blur(4px);
 	-webkit-backdrop-filter: blur(4px);
 	text-align: center;
+	transition: 0.3s;
 }
 
-#header-cta-wrapper {
-	margin-top: 0.5em;
+h1 {
+	padding: 0.25em 0.5em;
 }
 
 .header-border-bottom {
 	border-bottom: 1px solid #242424;
 }
 
+.header-dismiss {
+	transform: translateY(-13vh);
+}
+
 main {
-	min-height: 78vh;
+	min-height: 77vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

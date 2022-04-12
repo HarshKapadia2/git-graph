@@ -28,13 +28,6 @@ function App() {
 	const headerRef = useRef();
 
 	useEffect(() => {
-		const observer = new IntersectionObserver(scrollToTop, {
-			rootMargin: "-12%"
-		});
-		observer.observe(scrollToTopTriggerDiv.current);
-	}, []);
-
-	useEffect(() => {
 		if (fileBlobs.length !== 0) getObjectData();
 	}, [fileBlobs]);
 
@@ -47,6 +40,10 @@ function App() {
 			setObjectData(updatedObjectData);
 		}
 	}, [selectedCommits]);
+
+	useEffect(() => {
+		if (Object.keys(rawDataObjDetails).length !== 0) handleObjRawData();
+	}, [rawDataObjDetails]);
 
 	useEffect(() => {
 		if (isPackedRepo) {
@@ -62,8 +59,28 @@ function App() {
 	}, [isPackedRepo]);
 
 	useEffect(() => {
-		if (Object.keys(rawDataObjDetails).length !== 0) handleObjRawData();
-	}, [rawDataObjDetails]);
+		const observer = new IntersectionObserver(scrollToTop, {
+			rootMargin: "-12%"
+		});
+		observer.observe(scrollToTopTriggerDiv.current);
+	}, []);
+
+	useEffect(() => {
+		if (Object.keys(objectData).length !== 0) {
+			window.addEventListener("wheel", (event) => handleScroll(event), {
+				passive: true
+			});
+		}
+
+		return () =>
+			window.removeEventListener(
+				"wheel",
+				(event) => handleScroll(event),
+				{
+					passive: true
+				}
+			);
+	}, [objectData]);
 
 	const showDirectoryPicker = async () => {
 		const skippedDirectories = [
@@ -148,11 +165,18 @@ function App() {
 			if (entry.isIntersecting) {
 				backToTopBtn.current.classList.add("hidden");
 				headerRef.current.classList.remove("header-border-bottom");
+				headerRef.current.classList.remove("header-dismiss");
 			} else {
 				backToTopBtn.current.classList.remove("hidden");
 				headerRef.current.classList.add("header-border-bottom");
 			}
 		});
+	};
+
+	const handleScroll = (event) => {
+		if (event.deltaY > 0) headerRef.current.classList.add("header-dismiss");
+		else if (event.deltaY < 0)
+			headerRef.current.classList.remove("header-dismiss");
 	};
 
 	return (
@@ -176,6 +200,15 @@ function App() {
 			<main>
 				<div ref={scrollToTopTriggerDiv}></div>
 
+				{isPackedRepo ? (
+					<ErrorMsg errorType="packed repo" />
+				) : objectData.objects !== undefined ? (
+					<MemoizedGraphArea
+						objectData={objectData}
+						sendRawObjDetails={handleRawDataObjDetails}
+					/>
+				) : null}
+
 				{showCommitSelector && (
 					<CommitSelector
 						commits={objectData.objects.commits}
@@ -194,15 +227,6 @@ function App() {
 				)}
 
 				{isLoading && <Loader />}
-
-				{isPackedRepo ? (
-					<ErrorMsg errorType="packed repo" />
-				) : objectData.objects !== undefined ? (
-					<MemoizedGraphArea
-						objectData={objectData}
-						sendRawObjDetails={handleRawDataObjDetails}
-					/>
-				) : null}
 
 				<BackToTop
 					backToTopBtn={backToTopBtn}
