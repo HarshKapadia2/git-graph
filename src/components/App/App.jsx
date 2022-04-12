@@ -40,11 +40,12 @@ function App() {
 		if (isPackedRepo) {
 			if (isLoading) setIsLoading(false);
 			if (showCommitSelector) setShowCommitSelector(false);
-			if (Object.keys(rawDataObjDetails).length !== 0)
-				setRawDataObjDetails([]);
-			if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			if (Object.keys(objectData).length !== 0) setObjectData({});
+			if (Object.keys(rawDataObjDetails).length !== 0)
+				setRawDataObjDetails({});
+			if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			if (fileBlobs.length !== 0) setFileBlobs([]);
+			if (selectedCommits.length !== 0) setSelectedCommits([]);
 		}
 	}, [isPackedRepo]);
 
@@ -71,17 +72,19 @@ function App() {
 			}
 		})
 			.then((blobs) => {
+				if (showCommitSelector) setShowCommitSelector(false);
+
 				setFileBlobs(blobs);
 				setIsLoading(true);
 				setObjectData({});
 
 				if (isPackedRepo) setIsPackedRepo(false);
-				if (showCommitSelector) setShowCommitSelector(false);
+				if (selectedCommits.length !== 0) setSelectedCommits([]);
 				if (Object.keys(rawDataObjDetails).length !== 0)
-					setRawDataObjDetails([]);
+					setRawDataObjDetails({});
 				if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			})
-			.catch((err) => {});
+			.catch((err) => console.error("ERROR: ", err));
 	};
 
 	const getObjectData = async () => {
@@ -98,12 +101,13 @@ function App() {
 			objectConnections.unshift(headObj);
 
 			setIsLoading(false);
+			if (showCommitSelector) setShowCommitSelector(false);
 			setObjectData({ objects, objectConnections });
 			if (isPackedRepo) setIsPackedRepo(false);
-			if (showCommitSelector) setShowCommitSelector(false);
 			if (Object.keys(rawDataObjDetails).length !== 0)
-				setRawDataObjDetails([]);
+				setRawDataObjDetails({});
 			if (Object.keys(objRawData).length !== 0) setObjRawData({});
+			if (selectedCommits.length !== 0) setSelectedCommits([]);
 		} catch (err) {
 			if (err.message === "File not found.") setIsPackedRepo(true);
 		}
@@ -123,7 +127,7 @@ function App() {
 	};
 
 	const dismissRawDataDisplay = () => {
-		setRawDataObjDetails([]);
+		setRawDataObjDetails({});
 		setObjRawData({});
 	};
 
