@@ -7,14 +7,35 @@ body {
 	align-items: center;
 }
 
+html {
+	scroll-padding: 12vh 0 0 0;
+}
+
 header {
-	height: 10vh;
+	height: 12vh;
+	width: 100%;
 	display: grid;
 	place-content: center;
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background-color: #000000aa;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	text-align: center;
+}
+
+#header-cta-wrapper {
+	margin-top: 0.5em;
+}
+
+.header-border-bottom {
+	border-bottom: 1px solid #242424;
 }
 
 main {
-	min-height: 80vh;
+	min-height: 78vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

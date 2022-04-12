@@ -1,9 +1,9 @@
 import "./BackToTop.css";
 import upArrow from "./up-arrow.svg";
 
-const BackToTop = ({ backToTopBtn, header }) => {
+const BackToTop = ({ backToTopBtn, scrollToTopTriggerDiv }) => {
 	const scrollToTop = () => {
-		header.current.scrollIntoView(true);
+		scrollToTopTriggerDiv.current.scrollIntoView(true);
 	};
 
 	return (

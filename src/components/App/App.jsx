@@ -25,10 +25,12 @@ function App() {
 
 	const backToTopBtn = useRef();
 	const scrollToTopTriggerDiv = useRef();
-	const header = useRef();
+	const headerRef = useRef();
 
 	useEffect(() => {
-		const observer = new IntersectionObserver(scrollToTop);
+		const observer = new IntersectionObserver(scrollToTop, {
+			rootMargin: "-12%"
+		});
 		observer.observe(scrollToTopTriggerDiv.current);
 	}, []);
 
@@ -143,20 +145,22 @@ function App() {
 
 	const scrollToTop = (entries, observer) => {
 		entries.forEach((entry) => {
-			if (entry.isIntersecting)
+			if (entry.isIntersecting) {
 				backToTopBtn.current.classList.add("hidden");
-			else backToTopBtn.current.classList.remove("hidden");
+				headerRef.current.classList.remove("header-border-bottom");
+			} else {
+				backToTopBtn.current.classList.remove("hidden");
+				headerRef.current.classList.add("header-border-bottom");
+			}
 		});
 	};
 
 	return (
 		<>
-			<header ref={header}>
+			<header ref={headerRef}>
 				<h1>Git Graph</h1>
-			</header>
 
-			<main>
-				<div>
+				<div id="header-cta-wrapper">
 					<button onClick={() => showDirectoryPicker()}>
 						Select a '.git' Directory to Display
 					</button>
@@ -167,7 +171,9 @@ function App() {
 						</button>
 					)}
 				</div>
+			</header>
 
+			<main>
 				<div ref={scrollToTopTriggerDiv}></div>
 
 				{showCommitSelector && (
@@ -198,7 +204,10 @@ function App() {
 					/>
 				) : null}
 
-				<BackToTop backToTopBtn={backToTopBtn} header={header} />
+				<BackToTop
+					backToTopBtn={backToTopBtn}
+					scrollToTopTriggerDiv={scrollToTopTriggerDiv}
+				/>
 			</main>
 
 			<footer>
