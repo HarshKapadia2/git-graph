@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/git-graph/static/css/main.3a768d1e.css",
-    "main.js": "/git-graph/static/js/main.db3041cd.js",
+    "main.js": "/git-graph/static/js/main.77d2745f.js",
     "index.html": "/git-graph/index.html",
     "static/media/up-arrow.svg": "/git-graph/static/media/up-arrow.1a4dec2bfb92cc90a92a5e9f3e61886c.svg",
     "static/media/cross.svg": "/git-graph/static/media/cross.6271d678f8e4af06a717472a9bf7f227.svg",
@@ -9,6 +9,6 @@
   },
   "entrypoints": [
     "static/css/main.3a768d1e.css",
-    "static/js/main.db3041cd.js"
+    "static/js/main.77d2745f.js"
   ]
 }
