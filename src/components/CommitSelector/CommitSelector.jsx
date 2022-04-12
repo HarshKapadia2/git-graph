@@ -83,33 +83,37 @@ const CommitSelector = ({
 					</button>
 				</div>
 
+				<div id="commit-selector-btn-wrapper">
+					<button onClick={() => submitSelectedCommits()}>
+						Highlight Checked Commits
+					</button>
+				</div>
+
 				<div id="selector-commit-wrapper">
 					{commits.map((commit, index) => (
-						<div key={index} className="selector-commit">
+						<div
+							key={index}
+							className="selector-commit"
+							onClick={() => handleCheckboxChange(index)}
+						>
 							<input
 								type="checkbox"
 								checked={isChecked[index]}
-								onChange={() => handleCheckboxChange(index)}
+								readOnly
 							/>
+
 							<div className="selector-commit-text">
 								commit {commit.hash.slice(0, 7)}
 								<br />
-								{commit.name.length <= 30
-									? commit.name
-									: commit.name.slice(0, 30) + "..."}
+								<span className="selector-commit-text-msg">
+									{commit.name.length <= 30
+										? commit.name
+										: commit.name.slice(0, 30) + "..."}
+								</span>
 							</div>
 						</div>
 					))}
 				</div>
-			</div>
-
-			<div id="commit-selector-btn-wrapper">
-				<button
-					id="commit-select-btn"
-					onClick={() => submitSelectedCommits()}
-				>
-					Highlight Checked Commits
-				</button>
 			</div>
 		</div>
 	);

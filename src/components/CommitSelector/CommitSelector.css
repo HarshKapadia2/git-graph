@@ -5,7 +5,9 @@
 	justify-content: space-between;
 	width: 20vw;
 	min-height: 100vh;
-	background-color: black;
+	background-color: #000000aa;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
 	border-right: 1px solid #242424;
 	position: fixed;
 	top: 0;
@@ -14,11 +16,16 @@
 }
 
 #commit-selector-commit-wrapper,
-#commit-selector-shortcut-btn-wrapper {
+#commit-selector-shortcut-btn-wrapper,
+#commit-selector-btn-wrapper {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+#commit-selector-btn-wrapper {
+	padding-bottom: 0.5em;
 }
 
 #commit-selector-dismiss {
@@ -28,18 +35,35 @@
 }
 
 #selector-commit-wrapper {
-	max-height: 74vh;
-	overflow-y: auto;
+	max-height: 73vh;
+	overflow: auto;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 }
 
 .selector-commit {
-	margin: 1em 0.25em;
+	margin: 0.5em;
 	display: flex;
 	align-items: center;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	padding: 0.25em 0.5em;
+	border: 1px solid #242424;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.selector-commit:first-child {
+	margin-top: 0;
+}
+
+.selector-commit:last-child {
+	margin-bottom: 0;
+}
+
+.selector-commit-text-msg {
+	color: #616161;
 }
 
 .selector-commit input {
@@ -48,17 +72,6 @@
 
 .selector-commit-text {
 	margin-left: 0.5em;
-}
-
-#commit-selector-btn-wrapper {
-	width: 100%;
-	border-top: 1px solid #242424;
-	display: flex;
-	justify-content: center;
-}
-
-#commit-select-btn {
-	width: 80%;
 }
 
 /* ======================================================== SCROLLBAR ================================================== */
