@@ -55,7 +55,7 @@ button {
 	margin: 0.5em;
 	border-radius: 5px;
 	background-color: #242424;
-	border-color: #242424;
+	border: none;
 	color: #e0e0e0;
 	cursor: pointer !important;
 }

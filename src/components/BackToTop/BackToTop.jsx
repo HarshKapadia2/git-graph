@@ -8,7 +8,7 @@ const BackToTop = ({ backToTopBtn, scrollToTopTriggerDiv }) => {
 
 	return (
 		<button
-			id="back-to-top-btn"
+			className="back-to-top-btn"
 			ref={backToTopBtn}
 			onClick={() => scrollToTop()}
 		>

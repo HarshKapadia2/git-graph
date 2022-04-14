@@ -1,4 +1,6 @@
-#back-to-top-btn {
+.back-to-top-btn {
+	display: grid;
+	place-content: center;
 	padding: 1em;
 	position: fixed;
 	bottom: 2.5vh;
@@ -7,7 +9,7 @@
 	z-index: 1;
 }
 
-#back-to-top-btn img {
+.back-to-top-btn img {
 	width: 1em;
 	height: 1em;
 }
