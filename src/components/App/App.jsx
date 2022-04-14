@@ -33,6 +33,7 @@ function App() {
 
 	useEffect(() => {
 		if (objectData.objects !== undefined) {
+			setIsLoading(true);
 			const updatedObjectData = colorObjectsAndConnections(
 				objectData,
 				selectedCommits

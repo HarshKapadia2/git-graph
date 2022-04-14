@@ -15,17 +15,20 @@
 	z-index: 2;
 }
 
+#commit-selector h2 {
+	margin: 0.5em 0.5em 1em 0.5em;
+}
+
 #commit-selector-commit-wrapper,
-#commit-selector-shortcut-btn-wrapper,
-#commit-selector-btn-wrapper {
+#commit-selector-shortcut-btn-wrapper {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#commit-selector-btn-wrapper {
-	padding-bottom: 0.5em;
+#commit-selector-shortcut-btn-wrapper {
+	margin-bottom: 1em;
 }
 
 #commit-selector-dismiss {
@@ -35,7 +38,7 @@
 }
 
 #selector-commit-wrapper {
-	max-height: 73vh;
+	max-height: 71vh;
 	overflow: auto;
 	width: 100%;
 	display: flex;

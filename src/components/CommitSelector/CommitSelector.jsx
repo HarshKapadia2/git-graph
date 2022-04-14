@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./CommitSelector.css";
 import cross from "./cross.svg";
 
@@ -12,11 +12,13 @@ const CommitSelector = ({
 		new Array(commits.length).fill(false)
 	);
 
+	const timeoutInstance = useRef();
+
 	useEffect(() => {
 		if (selectedCommits.length === 0)
 			setIsChecked(new Array(commits.length).fill(false));
 		else {
-			const updatedCheckedState = [];
+			let updatedCheckedState = [];
 			for (let i = 0; i < commits.length; i++) {
 				if (
 					selectedCommits.some(
@@ -34,14 +36,25 @@ const CommitSelector = ({
 	const handleCheckboxChange = (index) => {
 		let checkboxState = [...isChecked]; // Can't directly assign, as passing by reference isn't considered as a change
 		checkboxState[index] = !checkboxState[index];
+
 		setIsChecked(checkboxState);
+		debouncedCommitSubmission(checkboxState);
 	};
 
-	const submitSelectedCommits = () => {
+	const debouncedCommitSubmission = (checkboxState) => {
+		clearTimeout(timeoutInstance.current);
+
+		timeoutInstance.current = setTimeout(
+			() => submitSelectedCommits(checkboxState),
+			900
+		);
+	};
+
+	const submitSelectedCommits = (checkboxState) => {
 		let commitArr = [];
-		for (let i = 0; i < commits.length; i++) {
-			if (isChecked[i] === true) commitArr.push(commits[i].hash);
-		}
+		for (let i = 0; i < commits.length; i++)
+			if (checkboxState[i] === true) commitArr.push(commits[i].hash);
+
 		selectCommits(commitArr);
 	};
 
@@ -73,6 +86,8 @@ const CommitSelector = ({
 					</button>
 				</div>
 
+				<h2>Highlight Commits</h2>
+
 				<div id="commit-selector-shortcut-btn-wrapper">
 					<button onClick={() => submitAllCommits()}>
 						Highlight All Commits
@@ -80,12 +95,6 @@ const CommitSelector = ({
 
 					<button onClick={() => submitNoCommit()}>
 						Unselect All Commits
-					</button>
-				</div>
-
-				<div id="commit-selector-btn-wrapper">
-					<button onClick={() => submitSelectedCommits()}>
-						Highlight Checked Commits
 					</button>
 				</div>
 
