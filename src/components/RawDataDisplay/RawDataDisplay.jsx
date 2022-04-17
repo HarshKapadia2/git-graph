@@ -8,6 +8,8 @@ const RawDataDisplay = ({ objDetails, rawData, dismissRawDataDisplay }) => {
 				<img src={cross} alt="Close" />
 			</button>
 
+			<h2>Raw Object Data</h2>
+
 			<div id="raw-data">
 				<div className="raw-data-field">
 					Object Name:{" "}
