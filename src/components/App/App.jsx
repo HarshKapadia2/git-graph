@@ -33,7 +33,6 @@ function App() {
 
 	useEffect(() => {
 		if (objectData.objects !== undefined) {
-			setIsLoading(true);
 			const updatedObjectData = colorObjectsAndConnections(
 				objectData,
 				selectedCommits
@@ -109,10 +108,6 @@ function App() {
 				setObjectData({});
 
 				if (isPackedRepo) setIsPackedRepo(false);
-				if (selectedCommits.length !== 0) setSelectedCommits([]);
-				if (Object.keys(rawDataObjDetails).length !== 0)
-					setRawDataObjDetails({});
-				if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			})
 			.catch((err) => console.error("ERROR: ", err));
 	};
@@ -134,10 +129,6 @@ function App() {
 			if (showCommitSelector) setShowCommitSelector(false);
 			setObjectData({ objects, objectConnections });
 			if (isPackedRepo) setIsPackedRepo(false);
-			if (Object.keys(rawDataObjDetails).length !== 0)
-				setRawDataObjDetails({});
-			if (Object.keys(objRawData).length !== 0) setObjRawData({});
-			if (selectedCommits.length !== 0) setSelectedCommits([]);
 		} catch (err) {
 			if (err.message === "File not found.") setIsPackedRepo(true);
 		}

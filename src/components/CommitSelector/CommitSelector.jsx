@@ -15,9 +15,7 @@ const CommitSelector = ({
 	const timeoutInstance = useRef();
 
 	useEffect(() => {
-		if (selectedCommits.length === 0)
-			setIsChecked(new Array(commits.length).fill(false));
-		else {
+		if (selectedCommits.length !== 0) {
 			let updatedCheckedState = [];
 			for (let i = 0; i < commits.length; i++) {
 				if (
