@@ -46,7 +46,7 @@ const CommitSelector = ({
 
 		timeoutInstance.current = setTimeout(
 			() => submitSelectedCommits(checkboxState),
-			900
+			800
 		);
 	};
 
