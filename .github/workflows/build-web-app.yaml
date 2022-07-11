@@ -33,7 +33,7 @@ jobs:
         container: node:17
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Build web app
               env:
@@ -48,7 +48,7 @@ jobs:
         container: node:17
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Build web app
               env:
@@ -63,7 +63,7 @@ jobs:
                   apt-get install rsync -y
 
             - name: Deploy to GitHub Pages
-              uses: JamesIves/github-pages-deploy-action@v4.2.2
+              uses: JamesIves/github-pages-deploy-action@v4
               with:
                   branch: gh-pages
                   folder: build
