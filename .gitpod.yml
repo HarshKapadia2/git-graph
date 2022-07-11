@@ -1,0 +1,27 @@
+tasks:
+    - name: Setup
+
+      init: |
+          # Install npm dependencies
+          # npm installs dependencies to the working folder, which are persistent across restarts
+          npm install
+
+      command: |
+          # Start the development server
+          npm run start
+
+vscode:
+    extensions:
+        - dsznajder.es7-react-js-snippets
+        - esbenp.prettier-vscode
+        - dbaeumer.vscode-eslint
+        - ritwickdey.liveserver
+        - mikestead.dotenv
+        - redhat.vscode-yaml
+        - streetsidesoftware.code-spell-checker
+        - vscode-icons-team.vscode-icons
+
+ports:
+    - port: 5000
+      onOpen: open-browser
+      visibility: public
