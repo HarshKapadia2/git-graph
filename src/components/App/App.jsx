@@ -89,7 +89,11 @@ function App() {
 			"lfs",
 			"logs",
 			"rebase-merge",
-			"remotes"
+			"remotes",
+			"info",
+			"pack",
+			"modules",
+			"worktrees"
 		];
 
 		await directoryOpen({
