@@ -76,18 +76,22 @@
 
 .selector-commit-text {
 	margin-left: 0.5em;
+	overflow: auto;
 }
 
 /* ======================================================== SCROLLBAR ================================================== */
 
+.selector-commit-text::-webkit-scrollbar,
 #selector-commit-wrapper::-webkit-scrollbar {
 	width: 0.7em;
 }
 
+.selector-commit-text::-webkit-scrollbar-track,
 #selector-commit-wrapper::-webkit-scrollbar-track {
 	background-color: #212121;
 }
 
+.selector-commit-text::-webkit-scrollbar-thumb,
 #selector-commit-wrapper::-webkit-scrollbar-thumb {
 	background-color: #616161;
 	border-radius: 2px;

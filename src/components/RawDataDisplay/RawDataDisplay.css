@@ -32,6 +32,7 @@
 	-webkit-backdrop-filter: blur(10px);
 	border: 1px solid #242424;
 	border-radius: 5px;
+	overflow: auto;
 }
 
 .raw-data-field:not(:last-child) {
@@ -57,14 +58,17 @@
 
 /* ======================================================== SCROLLBAR ================================================== */
 
+.raw-data-field::-webkit-scrollbar,
 #raw-data-file-content::-webkit-scrollbar {
 	width: 0.7em;
 }
 
+.raw-data-field::-webkit-scrollbar-track,
 #raw-data-file-content::-webkit-scrollbar-track {
 	background-color: #212121;
 }
 
+.raw-data-field::-webkit-scrollbar-thumb,
 #raw-data-file-content::-webkit-scrollbar-thumb {
 	background-color: #616161;
 	border-radius: 2px;
