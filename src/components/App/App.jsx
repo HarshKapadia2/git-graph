@@ -6,6 +6,7 @@ import CommitSelector from "../CommitSelector/CommitSelector";
 import Loader from "../Loader/Loader";
 import RawDataDisplay from "../RawDataDisplay/RawDataDisplay";
 import BackToTop from "../BackToTop/BackToTop";
+import IntroMsg from "../IntroMsg/IntroMsg";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
@@ -203,7 +204,7 @@ function App() {
 						objectData={objectData}
 						sendRawObjDetails={handleRawDataObjDetails}
 					/>
-				) : null}
+				) : isLoading ? null : <IntroMsg />}
 
 				{showCommitSelector && (
 					<CommitSelector
