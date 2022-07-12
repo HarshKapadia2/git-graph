@@ -182,7 +182,7 @@ function App() {
 
 				<div id="header-cta-wrapper">
 					<button onClick={() => showDirectoryPicker()}>
-						Select a '.git' Directory to Display
+						Select a <code>.git</code> Directory to Display
 					</button>
 
 					{objectData.objects !== undefined && (
@@ -231,7 +231,6 @@ function App() {
 			</main>
 
 			<footer>
-				Learn about&nbsp;
 				<a
 					href="https://git.harshkapadia.me/#_git_objects"
 					target="_blank"
@@ -239,7 +238,15 @@ function App() {
 				>
 					Git Objects
 				</a>
-				.&nbsp;Made by&nbsp;
+				&nbsp;|&nbsp;
+				<a
+					href="https://talks.harshkapadia.me/git_internals"
+					target="_blank"
+					rel="noreferrer"
+				>
+					Git Internals talks
+				</a>
+				&nbsp;|&nbsp;
 				<a
 					href="https://harshkapadia.me"
 					target="_blank"
@@ -247,15 +254,14 @@ function App() {
 				>
 					Harsh Kapadia
 				</a>
-				.&nbsp;Visit the&nbsp;
+				&nbsp;|&nbsp;
 				<a
 					href="https://github.com/HarshKapadia2/git-graph"
 					target="_blank"
 					rel="noreferrer"
 				>
-					GitHub Repo
+					GitHub repository
 				</a>
-				.
 			</footer>
 		</>
 	);
