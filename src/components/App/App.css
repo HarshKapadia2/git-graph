@@ -73,6 +73,7 @@ footer {
 	align-items: center;
 	padding: 1em 0;
 	margin: 0 0.5em;
+	flex-wrap: wrap;
 }
 
 a,
