@@ -12,6 +12,46 @@ async function getObjectType(files = [], hash = "") {
 	return objectType;
 }
 
+async function getAllBranches(fileObjects = []) {
+	let allBranches = [];
+
+	// Get branch names from the `.git/refs/heads` directory
+	for (let i = 0; i < fileObjects.length; i++) {
+		if (fileObjects[i].directoryHandle.name === "heads")
+			allBranches.push(fileObjects[i].handle.name);
+	}
+
+	// Get branch names from packed refs if the `packed-refs` file exists
+	let packedRefs = await readFile(fileObjects, ".git/packed-refs", "binary");
+	if (packedRefs !== undefined) {
+		packedRefs = packedRefs.split("\n");
+
+		for (let i = 1; i < packedRefs.length; i++) {
+			const refEntry = packedRefs[i].split(" ");
+
+			if (refEntry[1]?.indexOf("refs/heads/") >= 0) {
+				const index = refEntry[1].lastIndexOf("/");
+				const branchName = refEntry[1].slice(index + 1);
+
+				if (
+					!allBranches.some(
+						(branchInArr) => branchInArr === branchName
+					)
+				)
+					allBranches.push(branchName);
+			}
+		}
+	}
+
+	if (allBranches.length === 0) throw new Error("Branches not found.");
+
+	// Get current branch
+	let currentBranch = await readFile(fileObjects, ".git/HEAD", "binary");
+	currentBranch = currentBranch.slice(16, -1);
+
+	return { currentBranch, allBranches };
+}
+
 async function getDecompressedFileBuffer(files = [], path = "") {
 	let fileBuffer = await readFile(files, path, "buffer");
 
@@ -43,4 +83,4 @@ async function readFile(files = [], path = "", readType = "") {
 	});
 }
 
-export { getObjectType, getDecompressedFileBuffer, readFile };
+export { getObjectType, getAllBranches, getDecompressedFileBuffer, readFile };

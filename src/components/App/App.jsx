@@ -7,33 +7,57 @@ import Loader from "../Loader/Loader";
 import RawDataDisplay from "../RawDataDisplay/RawDataDisplay";
 import BackToTop from "../BackToTop/BackToTop";
 import IntroMsg from "../IntroMsg/IntroMsg";
+import BranchSelector from "../BranchSelector/BranchSelector";
 import getObjects from "../../util/generateObjects";
 import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
 import colorObjectsAndConnections from "../../util/coloring";
 import getObjRawData from "../../util/objectRawData";
+import { getAllBranches } from "../../util/commonFns";
 import "./App.css";
 
 function App() {
 	const [fileBlobs, setFileBlobs] = useState([]);
 	const [objectData, setObjectData] = useState({});
-	const [isPackedRepo, setIsPackedRepo] = useState(false);
+	const [errorType, setErrorType] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [showCommitSelector, setShowCommitSelector] = useState(false);
 	const [selectedCommits, setSelectedCommits] = useState([]);
 	const [rawDataObjDetails, setRawDataObjDetails] = useState({});
 	const [objRawData, setObjRawData] = useState({});
+	const [branchNames, setBranchNames] = useState({});
 
 	const backToTopBtn = useRef();
 	const scrollToTopTriggerDiv = useRef();
 	const headerRef = useRef();
 
 	useEffect(() => {
-		if (fileBlobs.length !== 0) getObjectData();
+		async function getBranchNames() {
+			if (fileBlobs.length !== 0) {
+				try {
+					const branchNamesTemp = await getAllBranches(fileBlobs);
+					setBranchNames(branchNamesTemp);
+				} catch (err) {
+					if (err.message === "Branches not found.")
+						setErrorType("no-branches");
+				}
+			}
+		}
+		getBranchNames();
 	}, [fileBlobs]);
 
 	useEffect(() => {
-		if (objectData.objects !== undefined) {
+		if (branchNames.currentBranch !== undefined) {
+			setIsLoading(true);
+			setShowCommitSelector(false);
+			setObjectData({});
+			setSelectedCommits([]);
+			parseObjects();
+		}
+	}, [branchNames]);
+
+	useEffect(() => {
+		if (objectData.objects !== undefined && selectedCommits.length !== 0) {
 			const updatedObjectData = colorObjectsAndConnections(
 				objectData,
 				selectedCommits
@@ -47,7 +71,7 @@ function App() {
 	}, [rawDataObjDetails]);
 
 	useEffect(() => {
-		if (isPackedRepo) {
+		if (errorType) {
 			if (isLoading) setIsLoading(false);
 			if (showCommitSelector) setShowCommitSelector(false);
 			if (Object.keys(objectData).length !== 0) setObjectData({});
@@ -56,8 +80,9 @@ function App() {
 			if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			if (fileBlobs.length !== 0) setFileBlobs([]);
 			if (selectedCommits.length !== 0) setSelectedCommits([]);
+			if (branchNames.currentBranch !== "") setBranchNames({});
 		}
-	}, [isPackedRepo]);
+	}, [errorType]);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(scrollToTop, {
@@ -108,18 +133,22 @@ function App() {
 			.then((blobs) => {
 				if (showCommitSelector) setShowCommitSelector(false);
 
-				setFileBlobs(blobs);
 				setIsLoading(true);
+				setFileBlobs(blobs);
+				setBranchNames({});
 				setObjectData({});
 
-				if (isPackedRepo) setIsPackedRepo(false);
+				if (errorType) setErrorType("");
 			})
 			.catch((err) => console.error("ERROR: ", err));
 	};
 
-	const getObjectData = async () => {
+	const parseObjects = async () => {
 		try {
-			let rawObjects = await getObjects(fileBlobs);
+			let rawObjects = await getObjects(
+				fileBlobs,
+				branchNames.currentBranch
+			);
 			let objects = formatObjects(rawObjects);
 			let objectConnections = getConnections(rawObjects);
 
@@ -130,13 +159,22 @@ function App() {
 			};
 			objectConnections.unshift(headObj);
 
-			setIsLoading(false);
 			if (showCommitSelector) setShowCommitSelector(false);
 			setObjectData({ objects, objectConnections });
-			if (isPackedRepo) setIsPackedRepo(false);
+			setIsLoading(false);
+			if (errorType) setErrorType("");
 		} catch (err) {
-			if (err.message === "File not found.") setIsPackedRepo(true);
+			if (err.message === "File not found.") setErrorType("packed-repo");
 		}
+	};
+
+	const handleBranchChange = (chosenBranch) => {
+		const branchNamesTemp = {
+			currentBranch: chosenBranch,
+			allBranches: branchNames.allBranches
+		};
+
+		setBranchNames(branchNamesTemp);
 	};
 
 	const handleObjRawData = async () => {
@@ -186,25 +224,49 @@ function App() {
 						Select a <code>.git</code> Directory to Display
 					</button>
 
-					{objectData.objects !== undefined && (
-						<button onClick={() => setShowCommitSelector(true)}>
-							Select Commits to Highlight
-						</button>
-					)}
+					{branchNames.currentBranch !== undefined ? (
+						isLoading ? (
+							<>
+								<BranchSelector
+									branchNames={branchNames}
+									handleBranchChange={handleBranchChange}
+									isDisabled={true}
+								/>
+								<button disabled={true}>
+									Select Commits to Highlight
+								</button>
+							</>
+						) : (
+							<>
+								<BranchSelector
+									branchNames={branchNames}
+									handleBranchChange={handleBranchChange}
+									isDisabled={false}
+								/>
+								<button
+									onClick={() => setShowCommitSelector(true)}
+								>
+									Select Commits to Highlight
+								</button>
+							</>
+						)
+					) : null}
 				</div>
 			</header>
 
 			<main>
 				<div ref={scrollToTopTriggerDiv}></div>
 
-				{isPackedRepo ? (
-					<ErrorMsg errorType="packed repo" />
+				{errorType !== "" ? (
+					<ErrorMsg errorType={errorType} />
 				) : objectData.objects !== undefined ? (
 					<MemoizedGraphArea
 						objectData={objectData}
 						sendRawObjDetails={handleRawDataObjDetails}
 					/>
-				) : isLoading ? null : <IntroMsg />}
+				) : isLoading ? null : (
+					<IntroMsg />
+				)}
 
 				{showCommitSelector && (
 					<CommitSelector
@@ -262,6 +324,14 @@ function App() {
 					rel="noreferrer"
 				>
 					GitHub repository
+				</a>
+				&nbsp;|&nbsp;
+				<a
+					href="https://github.com/HarshKapadia2/git-graph/issues"
+					target="_blank"
+					rel="noreferrer"
+				>
+					Report bugs
 				</a>
 			</footer>
 		</>

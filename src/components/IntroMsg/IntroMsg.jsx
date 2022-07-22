@@ -35,6 +35,10 @@ const IntroMsg = () => {
 					Once the graph is rendered, one can
 					<ul>
 						<li>
+							Use the Branch Selector to visualize any local
+							branch.
+						</li>
+						<li>
 							Use the Commit Selector to highlight one or more
 							Commits and their corresponding Trees and Blobs.
 						</li>
@@ -58,7 +62,7 @@ const IntroMsg = () => {
 					memory constraints.
 				</li>
 				<li>
-					Please report errors and bugs by{" "}
+					Please give suggestions and report errors and bugs by{" "}
 					<a
 						href="https://github.com/HarshKapadia2/git-graph/issues"
 						target="_blank"

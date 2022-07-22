@@ -124,6 +124,15 @@
 }
 ```
 
+## `branchNames` Structure
+
+```json
+{
+    "currentBranch": "<branch_name>|''",
+    "allBranches": []|["<branch_name>", ...]
+}
+```
+
 ## Further Help
 
 If any further help is needed, do not hesitate to contact the author ([Harsh Kapadia](https://harshkapadia.me)) via Twitter [@harshgkapadia](https://twitter.com/harshgkapadia), [LinkedIn](https://www.linkedin.com/in/harshgkapadia) or e-mail ([contact@harshkapadia.me](mailto:contact@harshkapadia.me)). An [issue](https://github.com/HarshKapadia2/git-graph/issues) can be raised as well.

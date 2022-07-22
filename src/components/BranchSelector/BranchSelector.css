@@ -1,0 +1,14 @@
+select {
+	padding: 0.5em 1em;
+	margin: 0.5em;
+	border-radius: 5px;
+	background-color: #242424;
+	border: none;
+	color: #e0e0e0;
+	cursor: pointer !important;
+	text-align: center;
+}
+
+select:disabled {
+	cursor: auto !important;
+}

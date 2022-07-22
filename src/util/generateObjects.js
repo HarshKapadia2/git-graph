@@ -8,9 +8,9 @@ let FILE_ARR = [];
 let OBJECT_ARR = [];
 let RECURSED_DATA = {};
 
-async function getObjects(fileObjects) {
+async function getObjects(fileObjects, branchName) {
 	FILE_ARR = fileObjects;
-	const head = await getHead();
+	const head = await getHeadCommit(branchName);
 	let commit = head;
 	let parentCommit = "";
 	let tree = "";
@@ -149,12 +149,18 @@ async function getBlobs(treeHash = "") {
 	return blobArr;
 }
 
-async function getHead() {
-	let headRef = await readFile(FILE_ARR, ".git/HEAD", "binary");
-	headRef = headRef.slice(5, -1);
+async function getHeadCommit(branchName) {
+	// let headRef = await readFile(FILE_ARR, ".git/HEAD", "binary");
+	// headRef = headRef.slice(5, -1);
 
-	let head = await readFile(FILE_ARR, `.git/${headRef}`, "binary");
-	if (head === undefined) head = await getHeadFromPackedRefs(headRef);
+	let head = await readFile(
+		FILE_ARR,
+		`.git/refs/heads/${branchName}`,
+		"binary"
+	);
+
+	if (head === undefined)
+		head = await getHeadCommitFromPackedRefs(branchName);
 	else head = head.slice(0, -1);
 
 	return head;
@@ -188,14 +194,14 @@ function getCommitMsg(commitObjContent = []) {
 	return commitObjContent[i];
 }
 
-async function getHeadFromPackedRefs(reqdRef = "") {
+async function getHeadCommitFromPackedRefs(branchName) {
 	let packedRefs = await readFile(FILE_ARR, ".git/packed-refs", "binary");
 	packedRefs = packedRefs.split("\n");
 
 	for (let i = 1; i < packedRefs.length; i++) {
 		const refEntry = packedRefs[i].split(" ");
 
-		if (refEntry[1] === reqdRef) return refEntry[0];
+		if (refEntry[1] === `refs/heads/${branchName}`) return refEntry[0];
 	}
 
 	return "";

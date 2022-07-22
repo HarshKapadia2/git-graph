@@ -16,21 +16,27 @@ Hosted at [HarshKapadia2.github.io/git-graph](https://harshkapadia2.github.io/gi
 -   Select the `.git` directory of a repository for the graph to render.
     -   If the `.git` directory is not visible in the directory picker, please enable hidden file viewing on the local machine.
     -   Extremely huge repositories might not load due to browser memory constraints.
-    -   Packed repo error: Please unpack **all** the [packfiles](https://git.harshkapadia.me/#_the_pack_directory) (`.pack` files) in the repository. ([Tutorial](https://www.youtube.com/watch?v=cauIy20JhFs))
+    -   'Packed repo' error: Please unpack **all** the [packfiles](https://git.harshkapadia.me/#_the_pack_directory) (`.pack` files) in the repository. ([Tutorial](https://www.youtube.com/watch?v=cauIy20JhFs))
+-   Using the Branch Selector, any local branch can be visualized.
+    -   'No branch' error: No branches could be found. Either the directory uploaded is not a `.git` directory or the repository has no commits in the checked out branch.
 -   Using the Commit Selector, one or more Commits and their corresponding Trees and Blobs can be highlighted.
 -   Hover over objects and click on the 'Raw' button to view the raw contents of that Git Object.
 
 ## Screenshots
 
-![](repo-img/sample-1.png)
+![](repo-img/sample-std.png)
+
+Select the branch to render 👇
+
+![](repo-img/sample-branch-selector.png)
 
 Select commit(s) to highlight 👇
 
-![](repo-img/sample-2.png)
+![](repo-img/sample-commit-selector.png)
 
 View the raw contents of any Git Object 👇
 
-![](repo-img/sample-3.png)
+![](repo-img/sample-raw-object-data.png)
 
 ## Contribution
 
