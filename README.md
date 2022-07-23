@@ -2,7 +2,7 @@
 
 Visualize the Directed Acyclic Graph that Git creates to connect Commit, Tree and Blob objects internally.
 
-Hosted at [HarshKapadia2.github.io/git-graph](https://harshkapadia2.github.io/git-graph).
+Hosted at [git-graph.harshkapadia.me](https://git-graph.harshkapadia.me).
 
 > NOTE:
 >
