@@ -11,6 +11,7 @@ function formatObjects(objectData = {}) {
 		COMMITS.push({
 			hash: gitObjects[objKey].commit,
 			name: gitObjects[objKey].commitMsg,
+			branchHead: gitObjects[objKey].branchHead,
 			color: true
 		});
 

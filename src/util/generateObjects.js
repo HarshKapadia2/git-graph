@@ -1,16 +1,16 @@
 import {
 	getObjectType,
-	getDecompressedFileBuffer,
-	readFile
+	getHeadCommit,
+	getDecompressedFileBuffer
 } from "./commonFns";
 
 let FILE_ARR = [];
 let OBJECT_ARR = [];
 let RECURSED_DATA = {};
 
-async function getObjects(fileObjects, branchName) {
+async function getObjects(fileObjects, branchInfo) {
 	FILE_ARR = fileObjects;
-	const head = await getHeadCommit(branchName);
+	const head = await getHeadCommit(FILE_ARR, branchInfo.currentBranch.name);
 	let commit = head;
 	let parentCommit = "";
 	let tree = "";
@@ -45,7 +45,27 @@ async function getObjects(fileObjects, branchName) {
 		if (parentCommitArr[0] === "parent") parentCommit = parentCommitArr[1];
 		else parentCommit = "";
 
-		OBJECT_ARR.push({ commit, commitMsg, parentCommit, tree, blobs });
+		let branchHead = "";
+		for (let i = 0; i < branchInfo.allBranches.length; i++) {
+			if (branchInfo.allBranches[i].branchHeadHash === commit) {
+				if (branchHead === "")
+					branchHead = branchInfo.allBranches[i].branchName;
+				else
+					branchHead =
+						branchHead +
+						", " +
+						branchInfo.allBranches[i].branchName;
+			}
+		}
+
+		OBJECT_ARR.push({
+			commit,
+			branchHead,
+			commitMsg,
+			parentCommit,
+			tree,
+			blobs
+		});
 
 		commit = parentCommit;
 	} while (parentCommit !== "");
@@ -149,23 +169,6 @@ async function getBlobs(treeHash = "") {
 	return blobArr;
 }
 
-async function getHeadCommit(branchName) {
-	// let headRef = await readFile(FILE_ARR, ".git/HEAD", "binary");
-	// headRef = headRef.slice(5, -1);
-
-	let head = await readFile(
-		FILE_ARR,
-		`.git/refs/heads/${branchName}`,
-		"binary"
-	);
-
-	if (head === undefined)
-		head = await getHeadCommitFromPackedRefs(branchName);
-	else head = head.slice(0, -1);
-
-	return head;
-}
-
 function getCommitMsg(commitObjContent = []) {
 	let i = 0;
 	let firstParent = commitObjContent[1].split(" ");
@@ -192,19 +195,6 @@ function getCommitMsg(commitObjContent = []) {
 	i++;
 
 	return commitObjContent[i];
-}
-
-async function getHeadCommitFromPackedRefs(branchName) {
-	let packedRefs = await readFile(FILE_ARR, ".git/packed-refs", "binary");
-	packedRefs = packedRefs.split("\n");
-
-	for (let i = 1; i < packedRefs.length; i++) {
-		const refEntry = packedRefs[i].split(" ");
-
-		if (refEntry[1] === `refs/heads/${branchName}`) return refEntry[0];
-	}
-
-	return "";
 }
 
 // function isCommitInObjArr(commitHash = "") {

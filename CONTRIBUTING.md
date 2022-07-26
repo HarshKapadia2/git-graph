@@ -57,6 +57,7 @@
             {
                 "hash": "<string>",
                 "name": "<commit_msg>|''",
+                "branchHead": "<branch_name>|''",
 				"color": <boolean>
             },
             ...
@@ -96,6 +97,7 @@
 	"objects": [
 		{
 			"commit": "<hash>",
+            "branchHead": "<branch_name>|''",
 			"commitMsg": "<commit_msg>|''",
 			"parentCommit": "<hash>|''",
 			"tree": "<hash>",
@@ -124,12 +126,21 @@
 }
 ```
 
-## `branchNames` Structure
+## `branchInfo` Structure
 
 ```json
 {
-    "currentBranch": "<branch_name>|''",
-    "allBranches": []|["<branch_name>", ...]
+    "currentBranch": {
+        "name": "<branch_name>",
+        "headHash": "<hash>"
+    },
+    "allBranches": [
+        {
+            "branchName": "<branch_name>",
+            "branchHeadHash": "<hash>"
+        },
+        ...
+    ]
 }
 ```
 

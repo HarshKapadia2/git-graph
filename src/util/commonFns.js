@@ -12,44 +12,27 @@ async function getObjectType(files = [], hash = "") {
 	return objectType;
 }
 
-async function getAllBranches(fileObjects = []) {
-	let allBranches = [];
+async function getHeadCommit(files = [], branchName) {
+	let head = await readFile(files, `.git/refs/heads/${branchName}`, "binary");
 
-	// Get branch names from the `.git/refs/heads` directory
-	for (let i = 0; i < fileObjects.length; i++) {
-		if (fileObjects[i].directoryHandle.name === "heads")
-			allBranches.push(fileObjects[i].handle.name);
+	if (head === undefined)
+		head = await getHeadCommitFromPackedRefs(files, branchName);
+	else head = head.slice(0, -1);
+
+	return head;
+}
+
+async function getHeadCommitFromPackedRefs(files = [], branchName) {
+	let packedRefs = await readFile(files, ".git/packed-refs", "binary");
+	packedRefs = packedRefs.split("\n");
+
+	for (let i = 1; i < packedRefs.length; i++) {
+		const refEntry = packedRefs[i].split(" ");
+
+		if (refEntry[1] === `refs/heads/${branchName}`) return refEntry[0];
 	}
 
-	// Get branch names from packed refs if the `packed-refs` file exists
-	let packedRefs = await readFile(fileObjects, ".git/packed-refs", "binary");
-	if (packedRefs !== undefined) {
-		packedRefs = packedRefs.split("\n");
-
-		for (let i = 1; i < packedRefs.length; i++) {
-			const refEntry = packedRefs[i].split(" ");
-
-			if (refEntry[1]?.indexOf("refs/heads/") >= 0) {
-				const index = refEntry[1].lastIndexOf("/");
-				const branchName = refEntry[1].slice(index + 1);
-
-				if (
-					!allBranches.some(
-						(branchInArr) => branchInArr === branchName
-					)
-				)
-					allBranches.push(branchName);
-			}
-		}
-	}
-
-	if (allBranches.length === 0) throw new Error("Branches not found.");
-
-	// Get current branch
-	let currentBranch = await readFile(fileObjects, ".git/HEAD", "binary");
-	currentBranch = currentBranch.slice(16, -1);
-
-	return { currentBranch, allBranches };
+	return "";
 }
 
 async function getDecompressedFileBuffer(files = [], path = "") {
@@ -83,4 +66,10 @@ async function readFile(files = [], path = "", readType = "") {
 	});
 }
 
-export { getObjectType, getAllBranches, getDecompressedFileBuffer, readFile };
+export {
+	getObjectType,
+	getHeadCommit,
+	getHeadCommitFromPackedRefs,
+	getDecompressedFileBuffer,
+	readFile
+};

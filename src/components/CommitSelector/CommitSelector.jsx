@@ -121,6 +121,14 @@ const CommitSelector = ({
 										: commit.name.slice(0, 30) + "..."}
 								</span>
 							</div>
+
+							{commit.branchHead !== "" && (
+								<div className="commit-selector-branch-head">
+									{commit.branchHead.length > 7
+										? commit.branchHead.slice(0, 7) + "..."
+										: commit.branchHead}
+								</div>
+							)}
 						</div>
 					))}
 				</div>

@@ -21,6 +21,7 @@ const ObjectArea = ({ objectType, objects, sendRawObjDetails }) => {
 						hash={obj.hash}
 						name={obj.name}
 						isToBeColored={obj.color}
+						branchHead={obj.branchHead}
 						sendRawObjDetails={sendRawObjDetails}
 						key={index}
 					/>

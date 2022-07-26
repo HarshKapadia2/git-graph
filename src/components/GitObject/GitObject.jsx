@@ -6,6 +6,7 @@ const GitObject = ({
 	hash,
 	name,
 	isToBeColored,
+	branchHead,
 	sendRawObjDetails
 }) => {
 	const objectClass = isToBeColored
@@ -23,6 +24,14 @@ const GitObject = ({
 
 	return (
 		<div className={objectClass} id={objId}>
+			{objectType === "commit" && branchHead !== "" && (
+				<div className="branch-head">
+					{branchHead.length <= 40
+						? branchHead
+						: branchHead.slice(0, 40) + "..."}
+				</div>
+			)}
+
 			{objectType}
 			{hash && " " + hash.slice(0, 7)}
 			{name && (

@@ -56,6 +56,7 @@
 	border: 1px solid #242424;
 	border-radius: 5px;
 	cursor: pointer;
+	position: relative;
 }
 
 .selector-commit:first-child {
@@ -77,6 +78,18 @@
 .selector-commit-text {
 	margin-left: 0.5em;
 	overflow: auto;
+}
+
+.commit-selector-branch-head {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	background-color: yellow;
+	padding: 0.125em 0.25em;
+	margin: 0.25em;
+	width: max-content;
+	border-radius: 5px;
+	color: black;
 }
 
 /* ======================================================== SCROLLBAR ================================================== */

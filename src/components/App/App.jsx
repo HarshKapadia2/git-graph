@@ -13,7 +13,7 @@ import formatObjects from "../../util/formatObjects";
 import getConnections from "../../util/generateConnections";
 import colorObjectsAndConnections from "../../util/coloring";
 import getObjRawData from "../../util/objectRawData";
-import { getAllBranches } from "../../util/commonFns";
+import getAllBranches from "../../util/generateBranchInfo";
 import "./App.css";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
 	const [selectedCommits, setSelectedCommits] = useState([]);
 	const [rawDataObjDetails, setRawDataObjDetails] = useState({});
 	const [objRawData, setObjRawData] = useState({});
-	const [branchNames, setBranchNames] = useState({});
+	const [branchInfo, setBranchInfo] = useState({});
 
 	const backToTopBtn = useRef();
 	const scrollToTopTriggerDiv = useRef();
@@ -35,8 +35,8 @@ function App() {
 		async function getBranchNames() {
 			if (fileBlobs.length !== 0) {
 				try {
-					const branchNamesTemp = await getAllBranches(fileBlobs);
-					setBranchNames(branchNamesTemp);
+					const branchInfoTemp = await getAllBranches(fileBlobs);
+					setBranchInfo(branchInfoTemp);
 				} catch (err) {
 					if (err.message === "Branches not found.")
 						setErrorType("no-branches");
@@ -47,14 +47,14 @@ function App() {
 	}, [fileBlobs]);
 
 	useEffect(() => {
-		if (branchNames.currentBranch !== undefined) {
+		if (branchInfo.currentBranch !== undefined) {
 			setIsLoading(true);
 			setShowCommitSelector(false);
 			setObjectData({});
 			setSelectedCommits([]);
 			parseObjects();
 		}
-	}, [branchNames]);
+	}, [branchInfo]);
 
 	useEffect(() => {
 		if (objectData.objects !== undefined && selectedCommits.length !== 0) {
@@ -80,7 +80,7 @@ function App() {
 			if (Object.keys(objRawData).length !== 0) setObjRawData({});
 			if (fileBlobs.length !== 0) setFileBlobs([]);
 			if (selectedCommits.length !== 0) setSelectedCommits([]);
-			if (branchNames.currentBranch !== "") setBranchNames({});
+			if (branchInfo.currentBranch !== undefined) setBranchInfo({});
 		}
 	}, [errorType]);
 
@@ -135,7 +135,7 @@ function App() {
 
 				setIsLoading(true);
 				setFileBlobs(blobs);
-				setBranchNames({});
+				setBranchInfo({});
 				setObjectData({});
 
 				if (errorType) setErrorType("");
@@ -145,10 +145,7 @@ function App() {
 
 	const parseObjects = async () => {
 		try {
-			let rawObjects = await getObjects(
-				fileBlobs,
-				branchNames.currentBranch
-			);
+			let rawObjects = await getObjects(fileBlobs, branchInfo);
 			let objects = formatObjects(rawObjects);
 			let objectConnections = getConnections(rawObjects);
 
@@ -168,19 +165,31 @@ function App() {
 		}
 	};
 
-	const handleBranchChange = (chosenBranch) => {
+	const handleBranchChange = (chosenBranchName) => {
+		let chosenBranchHeadHash = "";
+		for (let i = 0; i < branchInfo.allBranches.length; i++) {
+			if (branchInfo.allBranches[i].branchName === chosenBranchName) {
+				chosenBranchHeadHash = branchInfo.allBranches[i].branchHeadHash;
+				break;
+			}
+		}
+
 		const branchNamesTemp = {
-			currentBranch: chosenBranch,
-			allBranches: branchNames.allBranches
+			currentBranch: {
+				name: chosenBranchName,
+				headHash: chosenBranchHeadHash
+			},
+			allBranches: branchInfo.allBranches
 		};
 
-		setBranchNames(branchNamesTemp);
+		setBranchInfo(branchNamesTemp);
 	};
 
 	const handleObjRawData = async () => {
 		const rawObjData = await getObjRawData(
 			fileBlobs,
-			rawDataObjDetails.objHash
+			rawDataObjDetails.objHash,
+			branchInfo
 		);
 		setObjRawData(rawObjData);
 	};
@@ -224,11 +233,11 @@ function App() {
 						Select a <code>.git</code> Directory to Display
 					</button>
 
-					{branchNames.currentBranch !== undefined ? (
+					{branchInfo.currentBranch !== undefined ? (
 						isLoading ? (
 							<>
 								<BranchSelector
-									branchNames={branchNames}
+									branchInfo={branchInfo}
 									handleBranchChange={handleBranchChange}
 									isDisabled={true}
 								/>
@@ -239,7 +248,7 @@ function App() {
 						) : (
 							<>
 								<BranchSelector
-									branchNames={branchNames}
+									branchInfo={branchInfo}
 									handleBranchChange={handleBranchChange}
 									isDisabled={false}
 								/>

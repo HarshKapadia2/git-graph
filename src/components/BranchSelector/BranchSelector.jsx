@@ -1,23 +1,23 @@
 import "./BranchSelector.css";
 
-const BranchSelector = ({ branchNames, handleBranchChange, isDisabled }) => {
+const BranchSelector = ({ branchInfo, handleBranchChange, isDisabled }) => {
 	return (
 		<select
 			name="branch-name"
 			onChange={(e) => handleBranchChange(e.target.value)}
 			disabled={isDisabled}
 		>
-			<option value={branchNames.currentBranch}>
-				Branch: {branchNames.currentBranch}
+			<option value={branchInfo.currentBranch.name}>
+				Branch: {branchInfo.currentBranch.name}
 			</option>
 
-			{branchNames.allBranches.map((brName, index) => {
-				if (brName !== branchNames.currentBranch)
+			{branchInfo.allBranches.map((brObj, index) => {
+				if (brObj.branchName !== branchInfo.currentBranch.name)
 					return (
-						<option value={brName} key={index}>
-							{brName.length > 30
-								? brName.slice(0, 30) + "..."
-								: brName}
+						<option value={brObj.branchName} key={index}>
+							{brObj.branchName.length > 30
+								? brObj.branchName.slice(0, 30) + "..."
+								: brObj.branchName}
 						</option>
 					);
 			})}
